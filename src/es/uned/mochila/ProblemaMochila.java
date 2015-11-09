@@ -1,18 +1,27 @@
 package es.uned.mochila;
 
+import java.util.ArrayList;
+
 public class ProblemaMochila {
 	
 	private static final int TAMANO_POBLACION=10;
 	private static final int NUM_OBJETOS=100;
-	private static final int MAX_GENERACIONES=1000000;
+	private static final int MAX_GENERACIONES=10000;
 	
 	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
 	private Individuo[] descendencia=null;
 	private Individuo[][] matingPool=null;
 	private Objeto[] objetos=new Objeto[NUM_OBJETOS];
-	private Evaluador evaluador=new EvaluadorMochilaElementosOrdenados();
-	private SelectorPadres selectorPadres=new SelectorPadresTorneo();
+	private Evaluador evaluador=null;
+	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	
+	public ProblemaMochila(){
+		//Así encapsulo la creación y cuando tenga otras puedo generar sólo los nuevos constructores.
+		this.inicializarObjetos(objetos);
+		evaluador=new EvaluadorMochilaElementosOrdenados(this.generarCapacidadMochila(100, 10000));
+	}
+	
+
 	public void run(){
 		//BEGIN
 				//Inicializar la población con candidatos al azar
@@ -25,9 +34,8 @@ public class ProblemaMochila {
 					//Seleccionar la siguiente generacion
 				//fin repetir
 		
-		//Inicialización del AG
-		this.inicializarPoblacion(poblacion);
-		this.inicializarObjetos(objetos);
+		//Inicialización del AG		
+		this.inicializarPoblacion(poblacion, NUM_OBJETOS);
 		evaluador.inicializar(objetos);
 		
 		//Inicio del ciclo
@@ -35,6 +43,7 @@ public class ProblemaMochila {
 		
 		//Ciclo principal. Cuál debe ser la condición de terminación?? 
 		//De momento número máximo de generaciones
+		/*
 		for (int i=0;i<MAX_GENERACIONES;i++){
 			//SeleccionarPadres
 			//Recombinar padres
@@ -44,19 +53,27 @@ public class ProblemaMochila {
 			//Ojo, mirar lo del elitismo que viene en el enunciado de la páctica.
 			poblacion=descendencia;
 		}
-		
-		
-		
+		*/
 	}
 	
+	private double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
+		//Generar aleatoriamente la capacidad de la mochila entre 100 y 10.000
+		return Math.random() * (maxCapacidad-minCapacidad) + minCapacidad;
+	}
 	
-	
-	private void inicializarPoblacion(Individuo[] poblacion){
-		
+	private void inicializarPoblacion(Individuo[] poblacion, int numObjetos){
+		for (int i=0;i<poblacion.length;i++)
+		{
+			poblacion[i]=new Individuo(numObjetos);
+		}
 	}
 	
 	private void inicializarObjetos(Objeto[] objetos){
-		
+		//Los inicializa aleatoriamente
+		for (int i=0;i<objetos.length;i++)
+		{
+			objetos[i]=new Objeto();
+		}
 	}
 	
 	private void mutacion(Individuo[] descendencia)
@@ -64,8 +81,6 @@ public class ProblemaMochila {
 		for (Individuo a: descendencia){
 			a.mutacion();
 		}
-		
-	
 	}
 	
 	

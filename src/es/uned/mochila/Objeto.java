@@ -1,23 +1,32 @@
 package es.uned.mochila;
 
 public class Objeto {
-	private float valor;
-	private float volumen;
+	private double valor;
+	private double volumen;
+	
+	public Objeto(){
+		//Generado aleatoriamente
+		int minValor=1;
+		int maxValor=100;
+		
+		this.valor=Math.random() * (maxValor-minValor) + minValor;
+		this.volumen=Math.random() * (maxValor-minValor) + minValor;
+	}
 	
 	public Objeto(float valor, float volumen){
 		this.valor=valor;
 		this.volumen=volumen;
 	}
 	
-	public float getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public float getVolumen() {
+	public double getVolumen() {
 		return volumen;
 	}
 
-	public float getRation(){
+	public double getRatio(){
 		return valor/volumen;
 	}
 	
