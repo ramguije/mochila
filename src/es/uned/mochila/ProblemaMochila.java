@@ -1,16 +1,15 @@
 package es.uned.mochila;
 
-import java.util.ArrayList;
-
 public class ProblemaMochila {
 	
 	private static final int TAMANO_POBLACION=10;
 	private static final int NUM_OBJETOS=100;
 	private static final int MAX_GENERACIONES=10000;
+	private static final int TAMANO_TORNEO=2;
 	
 	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
 	private Individuo[] descendencia=null;
-	private Individuo[][] matingPool=null;
+	private Individuo[] matingPool=null;
 	private Objeto[] objetos=new Objeto[NUM_OBJETOS];
 	private Evaluador evaluador=null;
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
@@ -43,17 +42,21 @@ public class ProblemaMochila {
 		
 		//Ciclo principal. Cuál debe ser la condición de terminación?? 
 		//De momento número máximo de generaciones
-		/*
+		
 		for (int i=0;i<MAX_GENERACIONES;i++){
 			//SeleccionarPadres
+			matingPool=SelectorPadres.getSelector(this).getMatingPool(poblacion);
+			
 			//Recombinar padres
+			descendencia=CrucePadres.getInstanciaCruce(this).getDescendencia(matingPool);
+			
 			this.mutacion(descendencia);
 			evaluador.evaluar(descendencia);
 			//SeleccionarGeneracion (cambio de todos los elementos)
 			//Ojo, mirar lo del elitismo que viene en el enunciado de la páctica.
 			poblacion=descendencia;
 		}
-		*/
+		
 	}
 	
 	private double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
@@ -83,6 +86,20 @@ public class ProblemaMochila {
 		}
 	}
 	
+	
+	public int getTamanoPoblacion() {
+		return TAMANO_POBLACION;
+	}
+
+
+	public int getNumObjetos() {
+		return NUM_OBJETOS;
+	}
+
+
+	public int getTamanoTorneo() {
+		return TAMANO_TORNEO;
+	}
 	
 	
 }

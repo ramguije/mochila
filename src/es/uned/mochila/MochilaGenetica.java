@@ -9,6 +9,5 @@ public class MochilaGenetica {
 		problema.run();
 	}
 	
-	
 
 }
