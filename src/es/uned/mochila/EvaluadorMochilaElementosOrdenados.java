@@ -2,26 +2,36 @@ package es.uned.mochila;
 
 import java.util.Arrays;
 
-public class EvaluadorMochilaElementosOrdenados implements Evaluador {
+/**
+ * Clase EvaluadorMochilaElementosOrdenados
+ * @author Jesús Ramos
+ * La clase se encarga de implementar la función fitness y 
+ * de mantener los valores a través de las diferentes ejecuciones. 
+ * Valor medio y valor máximo de cada generación
+ * TODO: Cambiar Evaluador para que funcione como las demás (selectorPadres, etc)
+ *
+ */
+public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 
 	private Integer[] ordenObjetos=null;
 	private Objeto[] objetos=null;
 	private double capacidadMochila;
 	
-	public EvaluadorMochilaElementosOrdenados(double capacidad){
-		this.capacidadMochila=capacidad;
+	public EvaluadorMochilaElementosOrdenados(ProblemaMochila p){
+		this.capacidadMochila=p.getCapacidadMochila();
+		
+		this.objetos=p.getObjetos();
+		inicializar();
+		
 	}
 	
-	@Override
-	public void inicializar(Objeto[] objetos) {
+	private void inicializar() {
 		// TODO Auto-generated method stub
 		//generar un array con los índices de los objetos ordenados en función del ratio
 		
 		/*for (int i=0;i<objetos.length;i++){
 			System.out.println("indice :"+i+" valor :"+objetos[i].getRatio());
 		}*/
-		
-		this.objetos=objetos;
 		
 		//Genero un array de índices que será el que ordene para no alterar el orden real de los objetos.
 		ordenObjetos=new Integer[objetos.length];
@@ -42,7 +52,6 @@ public class EvaluadorMochilaElementosOrdenados implements Evaluador {
 	public void evaluar(Individuo[] elementos) {
 		//Nota, calcular aquí las medias y el máximo de fitness en cada generación
 		
-		System.out.println ("Tamaño de la mochila: "+this.capacidadMochila);
 		for (Individuo ind:elementos){
 			//Para cada elemento calculo su función fitness y se la añado
 			ind.setFitness(this.funcionFitness(ind));
@@ -84,9 +93,9 @@ public class EvaluadorMochilaElementosOrdenados implements Evaluador {
 			}
 			
 		}
-		System.out.println ("Total Valor: "+totalValor);
-		System.out.println ("Total Volumen: "+totalVolumen);
-		System.out.println ("Capacidad mochila: "+this.capacidadMochila);
+		//System.out.println ("Total Valor: "+totalValor);
+		//System.out.println ("Total Volumen: "+totalVolumen);
+		//System.out.println ("Capacidad mochila: "+this.capacidadMochila);
 		return totalValor;
 		
 	}

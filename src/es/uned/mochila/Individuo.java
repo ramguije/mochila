@@ -25,8 +25,20 @@ public class Individuo {
 		return genotipo;
 	}
 	
-	public void mutacion(){
+	public void mutacion(double probabilidadMutacion){
 		//Calcula la mutación.
+	
+		for (int i=0;i<genotipo.length;i++){
+			
+			double a=Math.random();
+			if (a<probabilidadMutacion){
+				//Se da la mutación, hago un cambio de valor del alelo
+				//System.out.println("MUTACIÓN!!");
+				genotipo[i]=(!genotipo[i]);
+				
+			}
+			
+		}
 	}
 
 	public double getFitness() {

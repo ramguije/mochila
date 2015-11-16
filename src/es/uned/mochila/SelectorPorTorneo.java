@@ -1,6 +1,5 @@
 package es.uned.mochila;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class SelectorPorTorneo extends SelectorPadres {
@@ -14,7 +13,7 @@ public class SelectorPorTorneo extends SelectorPadres {
 	}
 	
 	public Individuo[] getMatingPool(Individuo[] poblacion){
-		Individuo[] seleccionados=new Individuo[getProblema().getTamanoPoblacion()*2];
+		Individuo[] seleccionados=new Individuo[getProblema().getTamanoPoblacion()];
 		this.poblacion=poblacion;
 		
 		for (int i=0;i<seleccionados.length;i++){
@@ -23,27 +22,38 @@ public class SelectorPorTorneo extends SelectorPadres {
 			
 		}
 		
+		/*for (int i=0;i<seleccionados.length;i++){
+			//Conducimos un torneo para seleccionar cada padre
+			System.out.println("Padre "+i+" fitness: "+seleccionados[i].getFitness());
+			
+		}*/
 		return seleccionados;
 	}
 
 	private Individuo torneo (int tamanoTorneo){
 		Individuo[] padresPotenciales=new Individuo[tamanoTorneo];
+		double max=0;
+		int indMax=0;
 		
 		for (int i=0;i<tamanoTorneo;i++){
 			
 			int indice=new Random().nextInt(getProblema().getTamanoPoblacion());
-			System.out.println("Indice aleatorio: "+indice);
+			//System.out.println("Indice aleatorio: "+indice);
 			
 			padresPotenciales[i]=poblacion[indice];
+			
+			//System.out.println("Padre: "+i+", valor fitness: "+padresPotenciales[i].getFitness());
 		}
 		
-		//TODO Ojo, mira esto. Ordenar todo el array para buscar el máximo parece un poco bruto
+		for (int i=0;i<padresPotenciales.length;i++){
+			if (padresPotenciales[i].getFitness()>max){
+				max=padresPotenciales[i].getFitness();
+				indMax=i;
+			}
+		}
 		
-		Arrays.sort(padresPotenciales, 
-				(first,second) -> Double.compare(first.getFitness(), second.getFitness())*-1);
-		
-		//El ganador es el que sale primero después de ordenar
-		return padresPotenciales[0];
+		//System.out.println("Ganador: "+indMax+", valor fitness: "+padresPotenciales[indMax].getFitness());
+		return padresPotenciales[indMax];
 		
 	}
 	

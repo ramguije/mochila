@@ -13,37 +13,38 @@ public class CrucePorUnPunto extends CrucePadres {
 	protected Individuo[] getDescendencia(Individuo[] matingPool) {
 		Individuo[] descendencia=new Individuo[getProblema().getTamanoPoblacion()];
 		
-		for (int i=0, j=0;i<matingPool.length;i=i+2, j++){
-			descendencia[j]=cruceUnPunto(matingPool[i],matingPool[i+1]);
-		}
-		
-		return null;
-	}
-	
-	private Individuo cruceUnPunto (Individuo ind1, Individuo ind2){
-		boolean[] nuevoGenotipo=new boolean[getProblema().getNumObjetos()];
-		
-		int punto=(new Random().nextInt(getProblema().getNumObjetos()-1))+1;
-		
-		//Compruebo los límites del punto ([1,numObjs-1])
-		if (punto<1||punto>(getProblema().getNumObjetos()-1)){
-			System.out.println("ERROR!!! - HAS CALCULADO MAL EL PUNTO DEL CROSSOVER "+punto);
-			return null;
-		}
-		
-		for (int i=0;i<getProblema().getNumObjetos();i++){
-			if (i<punto){
-				nuevoGenotipo[i]=ind1.getGenotipo()[i];
-			}else{
-				nuevoGenotipo[i]=ind2.getGenotipo()[i];
+		for (int i=0;i<matingPool.length;i=i+2){
+			
+			//CRUCE POR UN PUNTO.
+			
+			boolean[] nuevoGenotipo1=new boolean[getProblema().getNumObjetos()];
+			boolean[] nuevoGenotipo2=new boolean[getProblema().getNumObjetos()];
+			
+			int punto=(new Random().nextInt(getProblema().getNumObjetos()-1))+1;
+			
+			//Compruebo los límites del punto ([1,numObjs-1])
+			if (punto<1||punto>(getProblema().getNumObjetos()-1)){
+				System.out.println("ERROR!!! - HAS CALCULADO MAL EL PUNTO DEL CROSSOVER "+punto);
+				return null;
 			}
+			
+			for (int j=0;j<nuevoGenotipo1.length;j++){
+				if (i<punto){
+					nuevoGenotipo1[i]=matingPool[i].getGenotipo()[i];
+					nuevoGenotipo2[i]=matingPool[i+1].getGenotipo()[i];
+				}else{
+					nuevoGenotipo1[i]=matingPool[i+1].getGenotipo()[i];
+					nuevoGenotipo2[i]=matingPool[i].getGenotipo()[i];
+				}
+				
+			}
+			
+			descendencia[i]=new Individuo(nuevoGenotipo1);
+			descendencia[i+1]=new Individuo(nuevoGenotipo2);
 			
 		}
 		
-		return new Individuo(nuevoGenotipo);
-		
+		return descendencia;
 	}
-	
-	
 
 }

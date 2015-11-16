@@ -4,7 +4,8 @@ public class ProblemaMochila {
 	
 	private static final int TAMANO_POBLACION=10;
 	private static final int NUM_OBJETOS=100;
-	private static final int MAX_GENERACIONES=10000;
+	//private static final int MAX_GENERACIONES=10000;
+	private static final int MAX_GENERACIONES=50;
 	private static final int TAMANO_TORNEO=2;
 	
 	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
@@ -12,33 +13,29 @@ public class ProblemaMochila {
 	private Individuo[] matingPool=null;
 	private Objeto[] objetos=new Objeto[NUM_OBJETOS];
 	private Evaluador evaluador=null;
+	private ReemplazoTotalConElitismo reemplazador=new ReemplazoTotalConElitismo();
+	private double capacidadMochila;
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	
 	public ProblemaMochila(){
 		//Así encapsulo la creación y cuando tenga otras puedo generar sólo los nuevos constructores.
 		this.inicializarObjetos(objetos);
-		evaluador=new EvaluadorMochilaElementosOrdenados(this.generarCapacidadMochila(100, 10000));
+		capacidadMochila=this.generarCapacidadMochila(100, 10000);
 	}
-	
 
 	public void run(){
-		//BEGIN
-				//Inicializar la población con candidatos al azar
-				//Evaluar los candidatos
-				//repetir hasta condicion de terminación
-					//seleccionar padres
-					//recombinar las parejas de padres
-					//proceso de mutación
-					//Evaluar nuevos candidatos
-					//Seleccionar la siguiente generacion
-				//fin repetir
-		
 		//Inicialización del AG		
 		this.inicializarPoblacion(poblacion, NUM_OBJETOS);
-		evaluador.inicializar(objetos);
+		
+		System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
+		System.out.println ("");
 		
 		//Inicio del ciclo
+		evaluador=Evaluador.getEvaluador(this);
 		evaluador.evaluar(poblacion);
+		System.out.println("Población inicial..............................");
+		evaluador.calculaEstadistica(poblacion).imprimir();
+		System.out.println ("");
 		
 		//Ciclo principal. Cuál debe ser la condición de terminación?? 
 		//De momento número máximo de generaciones
@@ -52,9 +49,11 @@ public class ProblemaMochila {
 			
 			this.mutacion(descendencia);
 			evaluador.evaluar(descendencia);
-			//SeleccionarGeneracion (cambio de todos los elementos)
-			//Ojo, mirar lo del elitismo que viene en el enunciado de la páctica.
-			poblacion=descendencia;
+			//Cambiar esta llamada
+			poblacion=reemplazador.reemplazo(poblacion, descendencia);
+			System.out.println("Generación "+(i+1)+"..............................");
+			evaluador.calculaEstadistica(poblacion).imprimir();
+			System.out.println ("");
 		}
 		
 	}
@@ -62,6 +61,7 @@ public class ProblemaMochila {
 	private double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
 		//Generar aleatoriamente la capacidad de la mochila entre 100 y 10.000
 		return Math.random() * (maxCapacidad-minCapacidad) + minCapacidad;
+		
 	}
 	
 	private void inicializarPoblacion(Individuo[] poblacion, int numObjetos){
@@ -81,8 +81,9 @@ public class ProblemaMochila {
 	
 	private void mutacion(Individuo[] descendencia)
 	{
-		for (Individuo a: descendencia){
-			a.mutacion();
+		double probabilidadMutacion=((double)1/getNumObjetos());
+		for (int i=0;i<descendencia.length;i++){
+			descendencia[i].mutacion(probabilidadMutacion);
 		}
 	}
 	
@@ -100,6 +101,15 @@ public class ProblemaMochila {
 	public int getTamanoTorneo() {
 		return TAMANO_TORNEO;
 	}
+	
+	public double getCapacidadMochila() {
+		return capacidadMochila;
+	}
+	
+	public Objeto[] getObjetos(){
+		return objetos;
+	}
+
 	
 	
 }
