@@ -2,6 +2,8 @@ package es.uned.mochila;
 
 import java.util.Arrays;
 
+
+//TODO: Conviene hace un indivio genérico?? Tengo una interfaz común??
 public class Individuo {
 	//De momento lo he implementado así, alguna forma mejor??
 	private boolean[] genotipo=null;
@@ -23,6 +25,17 @@ public class Individuo {
 
 	public boolean[] getGenotipo() {
 		return genotipo;
+	}
+	
+	public String getPrintableGenotipo() {
+		
+		StringBuffer representacionGenotipo=new StringBuffer("");
+		
+		for (int i=0;i<genotipo.length;i++){
+			representacionGenotipo.append(genotipo[i]?"1":"0");
+		}
+		
+		return representacionGenotipo.toString();
 	}
 	
 	public void mutacion(double probabilidadMutacion){

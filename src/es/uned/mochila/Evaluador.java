@@ -24,19 +24,21 @@ public abstract class Evaluador {
 		double valorMedio=0;
 		double mejorValor=0;
 		double sumValorMedio=0;
+		int mejorIndice=0;
 		
 		for (int i=0;i<elementos.length;i++){
 			sumValorMedio=sumValorMedio+elementos[i].getFitness();
 			
 			if (elementos[i].getFitness()>mejorValor){
 				mejorValor=elementos[i].getFitness();
+				mejorIndice=i;
 			}
 			
 		}
 		
 		valorMedio=sumValorMedio/elementos.length;
-
-		return new Estadistica(valorMedio, mejorValor);
+		
+		return new Estadistica(valorMedio, mejorValor, mejorIndice, elementos[mejorIndice].getPrintableGenotipo());
 		
 	}
 		

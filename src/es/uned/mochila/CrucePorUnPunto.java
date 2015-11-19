@@ -17,7 +17,7 @@ public class CrucePorUnPunto extends CrucePadres {
 			
 			//CRUCE POR UN PUNTO.
 			
-			boolean[] nuevoGenotipo1=new boolean[getProblema().getNumObjetos()];
+			boolean[] nuevoGenotipo1=new boolean[getProblema().getNumObjetos()];			
 			boolean[] nuevoGenotipo2=new boolean[getProblema().getNumObjetos()];
 			
 			int punto=(new Random().nextInt(getProblema().getNumObjetos()-1))+1;
@@ -28,16 +28,55 @@ public class CrucePorUnPunto extends CrucePadres {
 				return null;
 			}
 			
+			//debug imprimo los valores de los genotipos
+			/*System.out.print("genotipo individuo 1: ");
+			for (int j=0;j<matingPool[i].getGenotipo().length;j++){
+				System.out.print(matingPool[i].getGenotipo()[j]?"1":"0");
+				if (j==punto){
+					System.out.print("|");
+				}
+			}
+			System.out.println("");
+			
+			System.out.print("genotipo individuo 2: ");
+			for (int j=0;j<matingPool[i+1].getGenotipo().length;j++){
+				System.out.print(matingPool[i+1].getGenotipo()[j]?"1":"0");
+				if (j==punto){
+					System.out.print("|");
+				}
+			}
+			System.out.println("");*/
+			
 			for (int j=0;j<nuevoGenotipo1.length;j++){
-				if (i<punto){
-					nuevoGenotipo1[i]=matingPool[i].getGenotipo()[i];
-					nuevoGenotipo2[i]=matingPool[i+1].getGenotipo()[i];
+				
+				if (j<punto){
+					nuevoGenotipo1[j]=matingPool[i].getGenotipo()[j];
+					nuevoGenotipo2[j]=matingPool[i+1].getGenotipo()[j];
 				}else{
-					nuevoGenotipo1[i]=matingPool[i+1].getGenotipo()[i];
-					nuevoGenotipo2[i]=matingPool[i].getGenotipo()[i];
+					nuevoGenotipo1[j]=matingPool[i+1].getGenotipo()[j];
+					nuevoGenotipo2[j]=matingPool[i].getGenotipo()[j];
 				}
 				
 			}
+			
+			/*System.out.print("nuevo genotipo 1: ");
+			for (int j=0;j<nuevoGenotipo1.length;j++){
+				System.out.print(nuevoGenotipo1[j]?"1":"0");
+				if (j==punto){
+					System.out.print("|");
+				}
+			}
+			System.out.println("");
+			
+			System.out.print("nuevo genotipo 2: ");
+			for (int j=0;j<nuevoGenotipo2.length;j++){
+				System.out.print(nuevoGenotipo2[j]?"1":"0");
+				if (j==punto){
+					System.out.print("|");
+				}
+			}
+			System.out.println("");*/
+			
 			
 			descendencia[i]=new Individuo(nuevoGenotipo1);
 			descendencia[i+1]=new Individuo(nuevoGenotipo2);

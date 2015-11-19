@@ -5,8 +5,10 @@ public class ProblemaMochila {
 	private static final int TAMANO_POBLACION=10;
 	private static final int NUM_OBJETOS=100;
 	//private static final int MAX_GENERACIONES=10000;
-	private static final int MAX_GENERACIONES=50;
+	private static final int MAX_GENERACIONES=1000;
 	private static final int TAMANO_TORNEO=2;
+	private static final int MIN_MOCHILA=100;
+	private static final int MAX_MOCHILA=10000;
 	
 	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
 	private Individuo[] descendencia=null;
@@ -20,22 +22,24 @@ public class ProblemaMochila {
 	public ProblemaMochila(){
 		//Así encapsulo la creación y cuando tenga otras puedo generar sólo los nuevos constructores.
 		this.inicializarObjetos(objetos);
-		capacidadMochila=this.generarCapacidadMochila(100, 10000);
+		capacidadMochila=this.generarCapacidadMochila(MIN_MOCHILA, MAX_MOCHILA);
 	}
 
-	public void run(){
+	public Estadistica run(){
 		//Inicialización del AG		
 		this.inicializarPoblacion(poblacion, NUM_OBJETOS);
+		Estadistica ultimaEstadistica=null;
 		
-		System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
-		System.out.println ("");
+		//System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
+		//System.out.println ("");
 		
 		//Inicio del ciclo
 		evaluador=Evaluador.getEvaluador(this);
 		evaluador.evaluar(poblacion);
-		System.out.println("Población inicial..............................");
-		evaluador.calculaEstadistica(poblacion).imprimir();
-		System.out.println ("");
+		//System.out.println("Población inicial..............................");
+		ultimaEstadistica=evaluador.calculaEstadistica(poblacion);
+		//ultimaEstadistica.imprimir();
+		//System.out.println ("");
 		
 		//Ciclo principal. Cuál debe ser la condición de terminación?? 
 		//De momento número máximo de generaciones
@@ -51,10 +55,13 @@ public class ProblemaMochila {
 			evaluador.evaluar(descendencia);
 			//Cambiar esta llamada
 			poblacion=reemplazador.reemplazo(poblacion, descendencia);
-			System.out.println("Generación "+(i+1)+"..............................");
-			evaluador.calculaEstadistica(poblacion).imprimir();
-			System.out.println ("");
+			//System.out.println("Generación "+(i+1)+"..............................");
+			ultimaEstadistica=evaluador.calculaEstadistica(poblacion);
+			//ultimaEstadistica.imprimir();
+			//System.out.println ("");
 		}
+		
+		return ultimaEstadistica;
 		
 	}
 	
@@ -110,6 +117,9 @@ public class ProblemaMochila {
 		return objetos;
 	}
 
+	public void printConfiguracion(){
+		System.out.println("Sin hacer.");
+	}
 	
 	
 }

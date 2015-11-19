@@ -67,6 +67,12 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		double totalValor=0;
 		boolean mochilaLlena=false;
 		
+		//imprimo el orden de objetos
+		/*for (int i=0;i<ordenObjetos.length;i++){
+			System.out.println("Orden de objetos:");
+			System.out.println("indice :"+i+" orden indice :"+ordenObjetos[i]+" valor: "+objetos[ordenObjetos[i]].getRatio());
+		}*/
+		
 		/*System.out.println ("Función Fitness. Imprimo el genotipo ordenado");
 		
 		for (int i=0;i<ordenObjetos.length;i++)
@@ -82,7 +88,7 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		
 		for (int i=0;i<ordenObjetos.length&&!mochilaLlena;i++){
 			if ((genotipo[ordenObjetos[i]]==true) && 
-					(totalVolumen+this.objetos[ordenObjetos[i]].getVolumen()<=this.capacidadMochila)){
+					((totalVolumen+this.objetos[ordenObjetos[i]].getVolumen())<=this.capacidadMochila)){
 				//System.out.println ("El objeto "+i+" está y cabe en la mochila");
 				//System.out.println ("Valor: "+this.objetos[ordenObjetos[i]].getValor());
 				totalValor=totalValor+this.objetos[ordenObjetos[i]].getValor();
