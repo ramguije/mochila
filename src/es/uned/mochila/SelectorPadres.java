@@ -3,11 +3,11 @@ package es.uned.mochila;
 public abstract class SelectorPadres {
 	
 	//Ojo, esta referencia habría que hacerla a una clase abstracta o interfaz
-	private ProblemaMochila problema=null;
+	private EjecutorProblemaMochila problema=null;
 	//Referencia a la instancia Singleton 
 	private static SelectorPadres instancia=null;
 	
-	public static SelectorPadres getSelector(ProblemaMochila p)
+	public static SelectorPadres getSelector(EjecutorProblemaMochila p)
 	{
 		if (instancia==null){
 			instancia=new SelectorPorTorneo(p);
@@ -19,11 +19,11 @@ public abstract class SelectorPadres {
 	//Para ser implementado por la estrategia concreta de selección.
 	protected abstract Individuo[] getMatingPool(Individuo[] poblacion);
 	
-	protected void setProblema(ProblemaMochila p){
+	protected void setProblema(EjecutorProblemaMochila p){
 		this.problema=p;
 	}
 	
-	protected ProblemaMochila getProblema(){
+	protected EjecutorProblemaMochila getProblema(){
 		return problema;
 	}
 

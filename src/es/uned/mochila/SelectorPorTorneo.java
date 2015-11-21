@@ -6,7 +6,7 @@ public class SelectorPorTorneo extends SelectorPadres {
 	
 	private Individuo[] poblacion=null;
 	
-	protected SelectorPorTorneo(ProblemaMochila problema){
+	protected SelectorPorTorneo(EjecutorProblemaMochila problema){
 		this.setProblema(problema);
 		
 		

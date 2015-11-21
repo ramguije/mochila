@@ -17,7 +17,7 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 	private Objeto[] objetos=null;
 	private double capacidadMochila;
 	
-	public EvaluadorMochilaElementosOrdenados(ProblemaMochila p){
+	public EvaluadorMochilaElementosOrdenados(EjecutorProblemaMochila p){
 		this.capacidadMochila=p.getCapacidadMochila();
 		
 		this.objetos=p.getObjetos();

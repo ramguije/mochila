@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class CrucePorUnPunto extends CrucePadres {
 
-	protected CrucePorUnPunto (ProblemaMochila p){
+	protected CrucePorUnPunto (EjecutorProblemaMochila p){
 		this.setProblema(p);
 	}
 	

@@ -3,12 +3,12 @@ package es.uned.mochila;
 public abstract class Evaluador {
 	
 	//Ojo, esta referencia habría que hacerla a una clase abstracta o interfaz
-	private ProblemaMochila problema=null;
+	private EjecutorProblemaMochila problema=null;
 	//Referencia a la instancia Singleton 
 	private static Evaluador instancia=null;
 	
 	
-	public static Evaluador getEvaluador(ProblemaMochila p)
+	public static Evaluador getEvaluador(EjecutorProblemaMochila p)
 	{
 		if (instancia==null){
 			instancia=new EvaluadorMochilaElementosOrdenados(p);

@@ -13,7 +13,7 @@ public class Objeto {
 		this.volumen=Math.random() * (maxValor-minValor) + minValor;
 	}
 	
-	public Objeto(float valor, float volumen){
+	public Objeto(double valor, double volumen){
 		this.valor=valor;
 		this.volumen=volumen;
 	}

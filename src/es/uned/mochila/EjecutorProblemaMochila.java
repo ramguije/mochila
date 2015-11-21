@@ -1,33 +1,42 @@
 package es.uned.mochila;
 
-public class ProblemaMochila {
+public class EjecutorProblemaMochila {
+	//TODO Separar el objeto que resuelve del objeto Problema que encapsularía los datos del problema y no de la
+	//resolución.
 	
 	private static final int TAMANO_POBLACION=10;
-	private static final int NUM_OBJETOS=100;
 	//private static final int MAX_GENERACIONES=10000;
 	private static final int MAX_GENERACIONES=1000;
 	private static final int TAMANO_TORNEO=2;
 	private static final int MIN_MOCHILA=100;
 	private static final int MAX_MOCHILA=10000;
 	
+	//Encapsula los datos del problema.
+	private Problema problema=null;
+	
 	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
 	private Individuo[] descendencia=null;
 	private Individuo[] matingPool=null;
-	private Objeto[] objetos=new Objeto[NUM_OBJETOS];
 	private Evaluador evaluador=null;
 	private ReemplazoTotalConElitismo reemplazador=new ReemplazoTotalConElitismo();
-	private double capacidadMochila;
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	
-	public ProblemaMochila(){
+	public EjecutorProblemaMochila(){
+		int numObjetos=100;
+		
 		//Así encapsulo la creación y cuando tenga otras puedo generar sólo los nuevos constructores.
-		this.inicializarObjetos(objetos);
-		capacidadMochila=this.generarCapacidadMochila(MIN_MOCHILA, MAX_MOCHILA);
+		problema=new Problema(this.generarCapacidadMochila(MIN_MOCHILA, MAX_MOCHILA), numObjetos);
+		
+	}
+	
+	public EjecutorProblemaMochila(Problema problema){
+		this.problema=problema;
+		
 	}
 
 	public Estadistica run(){
 		//Inicialización del AG		
-		this.inicializarPoblacion(poblacion, NUM_OBJETOS);
+		this.inicializarPoblacion(poblacion, problema.getNumObjetos());
 		Estadistica ultimaEstadistica=null;
 		
 		//System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
@@ -78,14 +87,6 @@ public class ProblemaMochila {
 		}
 	}
 	
-	private void inicializarObjetos(Objeto[] objetos){
-		//Los inicializa aleatoriamente
-		for (int i=0;i<objetos.length;i++)
-		{
-			objetos[i]=new Objeto();
-		}
-	}
-	
 	private void mutacion(Individuo[] descendencia)
 	{
 		double probabilidadMutacion=((double)1/getNumObjetos());
@@ -100,21 +101,20 @@ public class ProblemaMochila {
 	}
 
 
-	public int getNumObjetos() {
-		return NUM_OBJETOS;
-	}
-
-
 	public int getTamanoTorneo() {
 		return TAMANO_TORNEO;
 	}
 	
+	public int getNumObjetos() {
+		return problema.getNumObjetos();
+	}
+	
 	public double getCapacidadMochila() {
-		return capacidadMochila;
+		return problema.getCapacidadMochila();
 	}
 	
 	public Objeto[] getObjetos(){
-		return objetos;
+		return problema.getObjetos();
 	}
 
 	public void printConfiguracion(){
