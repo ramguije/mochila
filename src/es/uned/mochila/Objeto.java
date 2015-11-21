@@ -3,14 +3,13 @@ package es.uned.mochila;
 public class Objeto {
 	private double valor;
 	private double volumen;
+	public static final int MIN_RANGO=1;
+	public static final int MAX_RANGO=100;
 	
 	public Objeto(){
-		//Generado aleatoriamente
-		int minValor=1;
-		int maxValor=100;
-		
-		this.valor=Math.random() * (maxValor-minValor) + minValor;
-		this.volumen=Math.random() * (maxValor-minValor) + minValor;
+		//Volumen y valor generados aleatoriamente
+		this.valor=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
+		this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 	}
 	
 	public Objeto(double valor, double volumen){

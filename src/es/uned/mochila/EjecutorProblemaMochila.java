@@ -5,11 +5,8 @@ public class EjecutorProblemaMochila {
 	//resolución.
 	
 	private static final int TAMANO_POBLACION=10;
-	//private static final int MAX_GENERACIONES=10000;
-	private static final int MAX_GENERACIONES=1000;
+	private static final int MAX_GENERACIONES=100;
 	private static final int TAMANO_TORNEO=2;
-	private static final int MIN_MOCHILA=100;
-	private static final int MAX_MOCHILA=10000;
 	
 	//Encapsula los datos del problema.
 	private Problema problema=null;
@@ -21,13 +18,6 @@ public class EjecutorProblemaMochila {
 	private ReemplazoTotalConElitismo reemplazador=new ReemplazoTotalConElitismo();
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	
-	public EjecutorProblemaMochila(){
-		int numObjetos=100;
-		
-		//Así encapsulo la creación y cuando tenga otras puedo generar sólo los nuevos constructores.
-		problema=new Problema(this.generarCapacidadMochila(MIN_MOCHILA, MAX_MOCHILA), numObjetos);
-		
-	}
 	
 	public EjecutorProblemaMochila(Problema problema){
 		this.problema=problema;
@@ -74,11 +64,6 @@ public class EjecutorProblemaMochila {
 		
 	}
 	
-	private double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
-		//Generar aleatoriamente la capacidad de la mochila entre 100 y 10.000
-		return Math.random() * (maxCapacidad-minCapacidad) + minCapacidad;
-		
-	}
 	
 	private void inicializarPoblacion(Individuo[] poblacion, int numObjetos){
 		for (int i=0;i<poblacion.length;i++)
@@ -118,7 +103,11 @@ public class EjecutorProblemaMochila {
 	}
 
 	public void printConfiguracion(){
-		System.out.println("Sin hacer.");
+		System.out.println("Tamaño población "+TAMANO_POBLACION);
+		System.out.println("Tamaño torneo "+TAMANO_TORNEO);
+		System.out.println("Número máximo de generaciones "+MAX_GENERACIONES);
+		System.out.println("");
+		
 	}
 	
 	

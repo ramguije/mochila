@@ -19,11 +19,13 @@ public class MochilaGenetica {
 		Estadistica resultado=null;
 		Problema problema=null;
 		
-		if (args[0]!=null){
-			problema=leerProblemaDeFichero(args[0]);
+		if (args.length > 0){
+			if (args[0]!=null){
+				problema=leerProblemaDeFichero(args[0]);
+			}
 		}
 		else{
-			System.out.println("Falta el fichero del problema");
+			problema=generarProblema();
 		}
 		
 		if (problema!=null){
@@ -37,10 +39,55 @@ public class MochilaGenetica {
 				resultado.imprimir();
 			}
 		}
+		else{
+			System.out.println("No hay problema que solucionar. Saliendo.");
+		}
 
 		
 	}
 	
+	
+	private static Problema generarProblema(){
+		Problema problema=null;
+		
+		System.out.println("No se ha especificado un fichero con la definición del problema.");
+		System.out.println("¿Desea crear una definición nueva?");
+		System.out.println("[S]í/[N]o (presione intro)");
+		try {
+			char nueva=(char)System.in.read();
+			System.in.read(new byte[10]);
+						
+			if (nueva=='s' || nueva=='S'){
+				boolean sencillo=false;
+				System.out.println("Prefiere un problema sencillo: "+Problema.NUM_OBJETOS_FACIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_FACIL+","+Problema.MAX_MOCHILA_FACIL+"]");
+				System.out.println("o complejo: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println("[s]encillo / [c]omplejo (presione intro)");
+				char sencillooComplejo=(char)System.in.read();
+				if (sencillooComplejo=='s' || sencillooComplejo=='S'){
+					sencillo=true;
+				}
+				problema=Problema.generarProblemaAleatorio(sencillo);
+				System.out.println("Guardando instancia del problema a disco");
+				String path=System.getProperty("user.dir");
+				String name=null;
+				if (sencillo){
+					name="mochila_sencilla_";
+				}else{
+					name="mochila_compleja_";
+				}
+				name=name+System.currentTimeMillis()+".txt";
+				boolean generado=problema.AFichero(path+'/'+name);
+				if (generado)
+					System.out.println("Fichero de instancia generado en "+path+'/'+name);
+			}
+			
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		return problema;
+	}
 	
 	private static Problema leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
 		double capacidadMochila=0;
