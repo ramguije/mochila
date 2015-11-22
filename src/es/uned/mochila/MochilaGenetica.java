@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class MochilaGenetica {
-	static final int REPETICIONES=50;
+	//static final int REPETICIONES=50;
 	
 	
 	/**
@@ -18,29 +18,44 @@ public class MochilaGenetica {
 	public static void main(String[] args) {
 		Estadistica resultado=null;
 		Problema problema=null;
+		Configuracion configuracion=null;
 		
 		if (args.length > 0){
 			if (args[0]!=null){
-				problema=leerProblemaDeFichero(args[0]);
+				configuracion=leerConfiguracionDeFichero(args[0]);
+			}
+			if (args.length > 1){
+				if (args[1]!=null){
+					problema=leerProblemaDeFichero(args[1]);
+				}
+			}
+			else{
+				problema=generarProblema();
 			}
 		}
 		else{
-			problema=generarProblema();
+			System.out.println("MochilaGenetica <fichero_parametros> [<fichero_problema>]");
+			System.out.println("Consulte el formato de los ficheros.");
 		}
 		
-		if (problema!=null){
+		if (configuracion!=null && problema!=null){
 		
-			EjecutorProblemaMochila ejecutor=new EjecutorProblemaMochila(problema);
+			EjecutorProblemaMochila ejecutor=new EjecutorProblemaMochila(problema, configuracion);
 			ejecutor.printConfiguracion();
 			
-			for (int i=0; i<REPETICIONES;i++){
+			for (int i=0; i<configuracion.getNumEjecuciones();i++){
 				resultado=ejecutor.run();
 				System.out.println("Ejecución "+i+": ");
 				resultado.imprimir();
 			}
 		}
 		else{
-			System.out.println("No hay problema que solucionar. Saliendo.");
+			if (configuracion==null){
+				System.out.println("No se han especificado los parámetros de ejecución. Saliendo.");
+			}
+			else{
+				System.out.println("No hay problema que solucionar. Saliendo.");
+			}
 		}
 
 		
@@ -168,6 +183,98 @@ public class MochilaGenetica {
 		
 		return problema;
 		
+	}
+	
+	
+	
+	/**
+	 * Lee un fichero de texto con los parámetros deseados para el algoritmo genético.
+	 * El formato es <nombre_parámetro>=<valor_parámetro> y debe contener los parámetros 
+	 * {ejecuciones, torneo, poblacion, generaciones}
+	 * Ejemplo 
+	 * #Parámetros de ejecución
+	 *	ejecuciones=50
+	 *	torneo=2
+	 *	poblacion=10
+	 *	generaciones=50
+	 * @param nombreFicheroConfiguracion El nombre del fichero a leer.
+	 * @return Un objeto de la clase Configuracion con los parámetros.
+	 */
+	private static Configuracion leerConfiguracionDeFichero(String nombreFicheroConfiguracion) throws IllegalArgumentException{
+		
+		int ejecuciones=0;
+		int poblacion=0;
+		int torneo=0;
+		int generaciones=0;
+		Configuracion configuracion=null;
+		
+		FileReader f =null;
+		BufferedReader b=null;
+		String cadena=null;
+		
+		int valorLeido=0;
+		int lineaTratada=0;
+		
+		try{
+			f = new FileReader(nombreFicheroConfiguracion);
+			b = new BufferedReader(f);
+			
+			
+			while((cadena = b.readLine())!=null) {
+				if (!cadena.startsWith("#")){
+					String[] valoresConfiguracion=cadena.split("=");
+					switch (valoresConfiguracion[0]){
+						case "ejecuciones":
+							ejecuciones=Integer.parseInt(valoresConfiguracion[1]);
+							break;
+						case "torneo":
+							torneo=Integer.parseInt(valoresConfiguracion[1]);
+							break;
+						case "poblacion":
+							poblacion=Integer.parseInt(valoresConfiguracion[1]);
+							break;
+						case "generaciones":
+							generaciones=Integer.parseInt(valoresConfiguracion[1]);
+							break;
+						default:
+							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
+					}
+					valorLeido++;
+				}
+				lineaTratada++;
+			}
+			configuracion=new Configuracion(ejecuciones, torneo, poblacion, generaciones);			
+			
+        }
+		catch (FileNotFoundException fnf){
+			System.out.println("ERROR - No se ha encontrado el fichero especificado.");
+			System.out.println("Mensaje: "+fnf.getMessage());
+		}
+		catch (IOException io){
+			System.out.println("ERROR - No se ha podido leer el fichero.");
+			System.out.println("Mensaje: "+io.getMessage());
+		}
+		catch (NumberFormatException nfe){
+			System.out.println("ERROR - Formato de número incorrecto en la línea "+lineaTratada+" del fichero. El valor debe ser un número entero");
+			System.out.println("Mensaje: "+nfe.getMessage());
+			throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
+		}
+		finally{
+			if (b!=null)
+				try {
+					b.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if (f!=null)
+				try {
+					f.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			
+		}
+		return configuracion;
 	}
 	
 

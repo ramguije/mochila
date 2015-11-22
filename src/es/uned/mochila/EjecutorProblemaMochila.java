@@ -4,14 +4,16 @@ public class EjecutorProblemaMochila {
 	//TODO Separar el objeto que resuelve del objeto Problema que encapsularía los datos del problema y no de la
 	//resolución.
 	
-	private static final int TAMANO_POBLACION=10;
-	private static final int MAX_GENERACIONES=100;
-	private static final int TAMANO_TORNEO=2;
+	//private static final int TAMANO_POBLACION=10;
+	//private static final int MAX_GENERACIONES=100;
+	//private static final int TAMANO_TORNEO=2;
 	
 	//Encapsula los datos del problema.
 	private Problema problema=null;
+	private Configuracion configuracion=null;
 	
-	private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
+	//private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
+	private Individuo[] poblacion=null;
 	private Individuo[] descendencia=null;
 	private Individuo[] matingPool=null;
 	private Evaluador evaluador=null;
@@ -19,9 +21,10 @@ public class EjecutorProblemaMochila {
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	
 	
-	public EjecutorProblemaMochila(Problema problema){
+	public EjecutorProblemaMochila(Problema problema, Configuracion configuracion){
 		this.problema=problema;
-		
+		this.configuracion=configuracion;
+		poblacion=new Individuo[configuracion.getTamanioPoblacion()];
 	}
 
 	public Estadistica run(){
@@ -43,7 +46,7 @@ public class EjecutorProblemaMochila {
 		//Ciclo principal. Cuál debe ser la condición de terminación?? 
 		//De momento número máximo de generaciones
 		
-		for (int i=0;i<MAX_GENERACIONES;i++){
+		for (int i=0;i<configuracion.getMaxGeneraciones();i++){
 			//SeleccionarPadres
 			matingPool=SelectorPadres.getSelector(this).getMatingPool(poblacion);
 			
@@ -82,12 +85,12 @@ public class EjecutorProblemaMochila {
 	
 	
 	public int getTamanoPoblacion() {
-		return TAMANO_POBLACION;
+		return configuracion.getTamanioPoblacion();
 	}
 
 
 	public int getTamanoTorneo() {
-		return TAMANO_TORNEO;
+		return configuracion.getTamanioTorneo();
 	}
 	
 	public int getNumObjetos() {
@@ -103,9 +106,9 @@ public class EjecutorProblemaMochila {
 	}
 
 	public void printConfiguracion(){
-		System.out.println("Tamaño población "+TAMANO_POBLACION);
-		System.out.println("Tamaño torneo "+TAMANO_TORNEO);
-		System.out.println("Número máximo de generaciones "+MAX_GENERACIONES);
+		System.out.println("Tamaño población "+configuracion.getTamanioPoblacion());
+		System.out.println("Tamaño torneo "+configuracion.getTamanioTorneo());
+		System.out.println("Número máximo de generaciones "+configuracion.getMaxGeneraciones());
 		System.out.println("");
 		
 	}

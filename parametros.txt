@@ -1,0 +1,5 @@
+#Parámetros de ejecución
+ejecuciones=50
+torneo=2
+poblacion=10
+generaciones=1000
