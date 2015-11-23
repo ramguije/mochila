@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class MochilaGenetica {
-	//static final int REPETICIONES=50;
-	
+	private static Estadistica[][] resultados=null;
+	private static Problema problema=null;
+	private static Configuracion configuracion=null;
+	private static String ficheroProblema=null;
 	
 	/**
 	 * Clase principal
@@ -16,9 +19,6 @@ public class MochilaGenetica {
 	 * Si no se aporta un segundo parámetro se genera un problema aleatorio. 
 	 */
 	public static void main(String[] args) {
-		Estadistica resultado=null;
-		Problema problema=null;
-		Configuracion configuracion=null;
 		
 		if (args.length > 0){
 			if (args[0]!=null){
@@ -42,12 +42,20 @@ public class MochilaGenetica {
 		
 			EjecutorProblemaMochila ejecutor=new EjecutorProblemaMochila(problema, configuracion);
 			ejecutor.printConfiguracion();
+			resultados=new Estadistica[configuracion.getNumEjecuciones()][configuracion.getMaxGeneraciones()+1];
 			
 			for (int i=0; i<configuracion.getNumEjecuciones();i++){
-				resultado=ejecutor.run();
+				//ejecuto el problema
+				resultados[i]=ejecutor.run();
+				
+				//Muestro el resultado de la ejecución.
 				System.out.println("Ejecución "+i+": ");
-				resultado.imprimir();
+				resultados[i][configuracion.getMaxGeneraciones()].imprimir();
 			}
+			
+			//Volcar los resultados a un fichero
+			escribirResultadosAFichero();
+			
 		}
 		else{
 			if (configuracion==null){
@@ -90,10 +98,11 @@ public class MochilaGenetica {
 				}else{
 					name="mochila_compleja_";
 				}
-				name=name+System.currentTimeMillis()+".txt";
-				boolean generado=problema.AFichero(path+'/'+name);
+				name=name+System.currentTimeMillis();
+				ficheroProblema=name;
+				boolean generado=problema.AFichero(path+System.getProperty("file.separator")+name);
 				if (generado)
-					System.out.println("Fichero de instancia generado en "+path+'/'+name);
+					System.out.println("Fichero de instancia generado en "+path+System.getProperty("file.separator")+name);
 			}
 			
 		}
@@ -104,6 +113,9 @@ public class MochilaGenetica {
 		return problema;
 	}
 	
+	
+	//TODO Si el problema se vuelca a fichero en la clase problema parece que tiene sentido que también se lea de fichero 
+	//en esa clase.
 	private static Problema leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
 		double capacidadMochila=0;
 		int numElementos=0;
@@ -143,7 +155,12 @@ public class MochilaGenetica {
 				}
 				lineaTratada++;
 			}
-			problema=new Problema(capacidadMochila, numElementos, valores, volumenes);			
+			problema=new Problema(capacidadMochila, numElementos, valores, volumenes);
+			
+			//Guardo el nombre del fichero del problema, lo utilizo para el fichero de resultados.
+			ficheroProblema=nombreFicheroProblema.
+					substring(nombreFicheroProblema.lastIndexOf(System.getProperty("file.separator"))+1,
+					nombreFicheroProblema.length());
 			
         }
 		catch (FileNotFoundException fnf){
@@ -212,7 +229,6 @@ public class MochilaGenetica {
 		BufferedReader b=null;
 		String cadena=null;
 		
-		int valorLeido=0;
 		int lineaTratada=0;
 		
 		try{
@@ -239,7 +255,6 @@ public class MochilaGenetica {
 						default:
 							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
 					}
-					valorLeido++;
 				}
 				lineaTratada++;
 			}
@@ -275,6 +290,42 @@ public class MochilaGenetica {
 			
 		}
 		return configuracion;
+	}
+	
+	
+	private static int escribirResultadosAFichero(){
+		PrintWriter writer=null;
+		int filasEscritas=0;
+		//El nombre será algo como "resultados_mochilaCompleja_100_10000_1000_4.txt"
+		String nombre=System.getProperty("user.dir")+System.getProperty("file.separator")+
+				"resultados_"+ficheroProblema+"_"+configuracion.getNumEjecuciones()+
+				"_"+configuracion.getMaxGeneraciones()+"_"+configuracion.getTamanioPoblacion()+
+				"_"+configuracion.getTamanioTorneo()+"_"+System.currentTimeMillis();
+		
+		try{
+			writer = new PrintWriter(nombre, "UTF-8");
+		
+			writer.println("ejecucion generacion mejorFitness fitnessMedio numEvals");
+			for (int i=0;i<configuracion.getNumEjecuciones();i++){
+				for (int j=0;j<configuracion.getMaxGeneraciones()+1;j++){
+					writer.println(i+" "+j+" "+resultados[i][j].getMejorFitness()+" "+
+							resultados[i][j].getFitnessMedio()+" "+resultados[i][j].getNumEvaluaciones());
+					filasEscritas++;
+				}
+				
+			}
+			writer.close();
+			System.out.println("Fichero de salida con los resultados generado en:");
+			System.out.println(nombre);
+
+		}
+		catch(IOException io)
+		{
+			System.out.println("ERROR - No se ha podido escribir el fichero de salida con los resultados.");
+			System.out.println("Mensaje: "+io.getMessage());
+		}
+		
+		return filasEscritas;
 	}
 	
 

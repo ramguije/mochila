@@ -1,36 +1,31 @@
 package es.uned.mochila;
 
 public class EjecutorProblemaMochila {
-	//TODO Separar el objeto que resuelve del objeto Problema que encapsularía los datos del problema y no de la
-	//resolución.
-	
-	//private static final int TAMANO_POBLACION=10;
-	//private static final int MAX_GENERACIONES=100;
-	//private static final int TAMANO_TORNEO=2;
 	
 	//Encapsula los datos del problema.
 	private Problema problema=null;
+	//Datos de configuracion
 	private Configuracion configuracion=null;
 	
-	//private Individuo[] poblacion=new Individuo[TAMANO_POBLACION];
 	private Individuo[] poblacion=null;
 	private Individuo[] descendencia=null;
 	private Individuo[] matingPool=null;
 	private Evaluador evaluador=null;
 	private ReemplazoTotalConElitismo reemplazador=new ReemplazoTotalConElitismo();
 	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
+	private Estadistica[] resultados=null;
 	
 	
 	public EjecutorProblemaMochila(Problema problema, Configuracion configuracion){
 		this.problema=problema;
 		this.configuracion=configuracion;
 		poblacion=new Individuo[configuracion.getTamanioPoblacion()];
+		resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
 	}
 
-	public Estadistica run(){
+	public Estadistica[] run(){
 		//Inicialización del AG		
 		this.inicializarPoblacion(poblacion, problema.getNumObjetos());
-		Estadistica ultimaEstadistica=null;
 		
 		//System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
 		//System.out.println ("");
@@ -39,7 +34,7 @@ public class EjecutorProblemaMochila {
 		evaluador=Evaluador.getEvaluador(this);
 		evaluador.evaluar(poblacion);
 		//System.out.println("Población inicial..............................");
-		ultimaEstadistica=evaluador.calculaEstadistica(poblacion);
+		resultados[0]=evaluador.calculaEstadistica(poblacion);
 		//ultimaEstadistica.imprimir();
 		//System.out.println ("");
 		
@@ -58,12 +53,12 @@ public class EjecutorProblemaMochila {
 			//Cambiar esta llamada
 			poblacion=reemplazador.reemplazo(poblacion, descendencia);
 			//System.out.println("Generación "+(i+1)+"..............................");
-			ultimaEstadistica=evaluador.calculaEstadistica(poblacion);
+			resultados[i+1]=evaluador.calculaEstadistica(poblacion);
 			//ultimaEstadistica.imprimir();
 			//System.out.println ("");
 		}
 		
-		return ultimaEstadistica;
+		return resultados;
 		
 	}
 	

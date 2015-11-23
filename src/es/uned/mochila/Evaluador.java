@@ -7,7 +7,9 @@ public abstract class Evaluador {
 	//Referencia a la instancia Singleton 
 	private static Evaluador instancia=null;
 	
-	
+	private int numEvaluacionesTotales;
+	private int numEvaluacionesUltimaGeneracion;
+
 	public static Evaluador getEvaluador(EjecutorProblemaMochila p)
 	{
 		if (instancia==null){
@@ -38,8 +40,29 @@ public abstract class Evaluador {
 		
 		valorMedio=sumValorMedio/elementos.length;
 		
-		return new Estadistica(valorMedio, mejorValor, mejorIndice, elementos[mejorIndice].getPrintableGenotipo());
+		return new Estadistica(valorMedio, 
+				mejorValor, mejorIndice, 
+				elementos[mejorIndice].getPrintableGenotipo(), 
+				getNumEvaluacionesTotales());
 		
+	}
+	
+	
+	
+	protected void setNumEvaluacionesTotales(int numEvaluacionesTotales) {
+		this.numEvaluacionesTotales = numEvaluacionesTotales;
+	}
+
+	protected void setNumEvaluacionesUltimaGeneracion(int numEvaluacionesUltimaGeneracion) {
+		this.numEvaluacionesUltimaGeneracion = numEvaluacionesUltimaGeneracion;
+	}
+
+	public int getNumEvaluacionesTotales() {
+		return numEvaluacionesTotales;
+	}
+
+	public int getNumEvaluacionesUltimaGeneracion() {
+		return numEvaluacionesUltimaGeneracion;
 	}
 		
 }

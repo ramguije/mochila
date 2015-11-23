@@ -50,7 +50,9 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 
 	@Override
 	public void evaluar(Individuo[] elementos) {
-		//Nota, calcular aquí las medias y el máximo de fitness en cada generación
+		
+		//reseteo el contador de evaluaciones
+		this.setNumEvaluacionesUltimaGeneracion(0);
 		
 		for (Individuo ind:elementos){
 			//Para cada elemento calculo su función fitness y se la añado
@@ -102,6 +104,8 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		//System.out.println ("Total Valor: "+totalValor);
 		//System.out.println ("Total Volumen: "+totalVolumen);
 		//System.out.println ("Capacidad mochila: "+this.capacidadMochila);
+		this.setNumEvaluacionesTotales(this.getNumEvaluacionesTotales()+1);
+		this.setNumEvaluacionesUltimaGeneracion(this.getNumEvaluacionesUltimaGeneracion()+1);
 		return totalValor;
 		
 	}
