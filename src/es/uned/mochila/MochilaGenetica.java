@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MochilaGenetica {
 	private static Estadistica[][] resultados=null;
@@ -45,11 +47,14 @@ public class MochilaGenetica {
 			resultados=new Estadistica[configuracion.getNumEjecuciones()][configuracion.getMaxGeneraciones()+1];
 			
 			for (int i=0; i<configuracion.getNumEjecuciones();i++){
+				System.out.println("Hora de inicio ejecución "+i+": "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSSS").format(new Date()));
+				
 				//ejecuto el problema
 				resultados[i]=ejecutor.run();
 				
 				//Muestro el resultado de la ejecución.
-				System.out.println("Ejecución "+i+": ");
+				//System.out.println("Ejecución "+i+": ");
+				System.out.println("Hora de fin ejecución "+i+": "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSSS").format(new Date()));
 				resultados[i][configuracion.getMaxGeneraciones()].imprimir();
 			}
 			
