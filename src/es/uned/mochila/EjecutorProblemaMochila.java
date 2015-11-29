@@ -20,12 +20,13 @@ public class EjecutorProblemaMochila {
 		this.problema=problema;
 		this.configuracion=configuracion;
 		poblacion=new Individuo[configuracion.getTamanioPoblacion()];
-		resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
+		//resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
 	}
 
 	public Estadistica[] run(){
 		//Inicialización del AG		
 		this.inicializarPoblacion(poblacion, problema.getNumObjetos());
+		resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
 		
 		//System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
 		//System.out.println ("");
