@@ -18,12 +18,16 @@ public class Configuracion {
 	
 	//El número máximo de generaciones que se permiten
 	private int maxGeneraciones;
+	
+	//El promedio de mutaciones en el genotipo del indivíduo
+	private double promedioMutaciones;
 
-	public Configuracion(int numEjecuciones, int tamanioTorneo, int tamanioPoblacion, int maxGeneraciones){
+	public Configuracion(int numEjecuciones, int tamanioTorneo, int tamanioPoblacion, int maxGeneraciones, double promedioMutaciones){
 		this.maxGeneraciones=maxGeneraciones;
 		this.numEjecuciones=numEjecuciones;
 		this.tamanioPoblacion=tamanioPoblacion;
 		this.tamanioTorneo=tamanioTorneo;
+		this.promedioMutaciones=promedioMutaciones;
 	}
 
 	public int getNumEjecuciones() {
@@ -40,6 +44,10 @@ public class Configuracion {
 
 	public int getMaxGeneraciones() {
 		return maxGeneraciones;
+	}
+	
+	public double getPromedioMutaciones(){
+		return promedioMutaciones;
 	}
 
 }

@@ -86,28 +86,35 @@ public class MochilaGenetica {
 			System.in.read(new byte[10]);
 						
 			if (nueva=='s' || nueva=='S'){
-				boolean sencillo=false;
+				//boolean sencillo=false;
 				System.out.println("Prefiere un problema sencillo: "+Problema.NUM_OBJETOS_FACIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_FACIL+","+Problema.MAX_MOCHILA_FACIL+"]");
-				System.out.println("o complejo: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
-				System.out.println("[s]encillo / [c]omplejo (presione intro)");
-				char sencillooComplejo=(char)System.in.read();
-				if (sencillooComplejo=='s' || sencillooComplejo=='S'){
-					sencillo=true;
+				System.out.println("complejo: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println("o complejo restringiendo los intervalos: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println("[s]encillo / [c]omplejo / complejo con [i]ntervalos de valores (presione intro)");
+				char tipoProblema=(char)System.in.read();
+				if (tipoProblema=='s' || tipoProblema=='S' || tipoProblema=='c' || tipoProblema=='C' 
+						|| tipoProblema=='i' || tipoProblema=='I' ){
+					problema=Problema.generarProblemaAleatorio(tipoProblema);
+					System.out.println("Guardando instancia del problema a disco");
+					String path=System.getProperty("user.dir");
+					String name=null;
+					if (tipoProblema=='s'||tipoProblema=='S'){
+						name="mochila_sencilla_";
+					}else if (tipoProblema=='c'||tipoProblema=='C'){
+						name="mochila_compleja_";
+					}else{
+						name="mochila_compleja_intervalos_";
+					}
+					name=name+System.currentTimeMillis();
+					ficheroProblema=name;
+					boolean generado=problema.AFichero(path+System.getProperty("file.separator")+name);
+					if (generado)
+						System.out.println("Fichero de instancia generado en "+path+System.getProperty("file.separator")+name);
 				}
-				problema=Problema.generarProblemaAleatorio(sencillo);
-				System.out.println("Guardando instancia del problema a disco");
-				String path=System.getProperty("user.dir");
-				String name=null;
-				if (sencillo){
-					name="mochila_sencilla_";
-				}else{
-					name="mochila_compleja_";
+				else{
+					System.out.println("Opción no válida.");
 				}
-				name=name+System.currentTimeMillis();
-				ficheroProblema=name;
-				boolean generado=problema.AFichero(path+System.getProperty("file.separator")+name);
-				if (generado)
-					System.out.println("Fichero de instancia generado en "+path+System.getProperty("file.separator")+name);
+				
 			}
 			
 		}
@@ -164,8 +171,13 @@ public class MochilaGenetica {
 			
 			//Guardo el nombre del fichero del problema, lo utilizo para el fichero de resultados.
 			ficheroProblema=nombreFicheroProblema.
-					substring(nombreFicheroProblema.lastIndexOf(System.getProperty("file.separator"))+1,
-					nombreFicheroProblema.length());
+					substring(nombreFicheroProblema.lastIndexOf(System.getProperty("file.separator"))+1);
+			
+			
+			if (ficheroProblema.contains("/")){
+				ficheroProblema=ficheroProblema.substring(ficheroProblema.lastIndexOf('/')+1);
+				
+			}
 			
         }
 		catch (FileNotFoundException fnf){
@@ -224,10 +236,11 @@ public class MochilaGenetica {
 	 */
 	private static Configuracion leerConfiguracionDeFichero(String nombreFicheroConfiguracion) throws IllegalArgumentException{
 		
-		int ejecuciones=0;
-		int poblacion=0;
-		int torneo=0;
-		int generaciones=0;
+		int ejecuciones=50;
+		int poblacion=100;
+		int torneo=2;
+		int generaciones=5000;
+		double promedioMutaciones=1;
 		Configuracion configuracion=null;
 		
 		FileReader f =null;
@@ -257,13 +270,16 @@ public class MochilaGenetica {
 						case "generaciones":
 							generaciones=Integer.parseInt(valoresConfiguracion[1]);
 							break;
+						case "mutaciones":
+							promedioMutaciones=Double.parseDouble(valoresConfiguracion[1]);
+							break;
 						default:
 							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
 					}
 				}
 				lineaTratada++;
 			}
-			configuracion=new Configuracion(ejecuciones, torneo, poblacion, generaciones);			
+			configuracion=new Configuracion(ejecuciones, torneo, poblacion, generaciones, promedioMutaciones);			
 			
         }
 		catch (FileNotFoundException fnf){
@@ -301,6 +317,7 @@ public class MochilaGenetica {
 	private static int escribirResultadosAFichero(){
 		PrintWriter writer=null;
 		int filasEscritas=0;
+		
 		//El nombre será algo como "resultados_mochilaCompleja_100_10000_1000_4.txt"
 		String nombre=System.getProperty("user.dir")+System.getProperty("file.separator")+
 				"resultados_"+ficheroProblema+"_"+configuracion.getNumEjecuciones()+

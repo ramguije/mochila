@@ -8,10 +8,15 @@ public class Estadistica {
 	private int numEvaluaciones; //número de evaluaciones de la función fitness
 	
 	public Estadistica(double valorMedio, double mejorValor, int mejorIndice, String printableGenotipo, int numEvaluaciones){
+		this(valorMedio, mejorValor, mejorIndice, numEvaluaciones);
+		
+		this.printableGenotipo=printableGenotipo;
+	}
+	
+	public Estadistica(double valorMedio, double mejorValor, int mejorIndice, int numEvaluaciones){
 		this.mejorFitness=mejorValor;
 		this.fitnessMedio=valorMedio;
 		this.indiceMejorElemento=mejorIndice;
-		this.printableGenotipo=printableGenotipo;
 		this.numEvaluaciones=numEvaluaciones;
 	}
 	

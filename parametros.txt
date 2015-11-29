@@ -1,5 +1,7 @@
 #Parámetros de ejecución
-ejecuciones=50
-torneo=2
-poblacion=10
-generaciones=1000
+ejecuciones=10
+torneo=9
+poblacion=50
+generaciones=5000
+#Promedio de mutaciones en cada individuo
+mutaciones=1

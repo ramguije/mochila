@@ -73,9 +73,8 @@ public class EjecutorProblemaMochila {
 	
 	private void mutacion(Individuo[] descendencia)
 	{
-		double probabilidadMutacion=((double)1/getNumObjetos());
 		for (int i=0;i<descendencia.length;i++){
-			descendencia[i].mutacion(probabilidadMutacion);
+			descendencia[i].mutacion(configuracion.getPromedioMutaciones());
 		}
 	}
 	
@@ -105,6 +104,7 @@ public class EjecutorProblemaMochila {
 		System.out.println("Tamaño población "+configuracion.getTamanioPoblacion());
 		System.out.println("Tamaño torneo "+configuracion.getTamanioTorneo());
 		System.out.println("Número máximo de generaciones "+configuracion.getMaxGeneraciones());
+		System.out.println("Número promedio de mutaciones por individuo "+configuracion.getPromedioMutaciones());
 		System.out.println("");
 		
 	}

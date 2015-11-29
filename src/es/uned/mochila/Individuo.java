@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 
 //TODO: Conviene hace un indivio genérico?? Tengo una interfaz común??
+//TODO: Sacar la probabilidad de mutación a un parámetro?
 public class Individuo {
 	//De momento lo he implementado así, alguna forma mejor??
 	private boolean[] genotipo=null;
@@ -38,9 +39,10 @@ public class Individuo {
 		return representacionGenotipo.toString();
 	}
 	
-	public void mutacion(double probabilidadMutacion){
+	public void mutacion(double promedioMutaciones){
 		//Calcula la mutación.
-	
+		double probabilidadMutacion=(promedioMutaciones/genotipo.length);
+		
 		for (int i=0;i<genotipo.length;i++){
 			
 			double a=Math.random();

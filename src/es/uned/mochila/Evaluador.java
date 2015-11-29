@@ -42,7 +42,6 @@ public abstract class Evaluador {
 		
 		return new Estadistica(valorMedio, 
 				mejorValor, mejorIndice, 
-				elementos[mejorIndice].getPrintableGenotipo(), 
 				getNumEvaluacionesTotales());
 		
 	}

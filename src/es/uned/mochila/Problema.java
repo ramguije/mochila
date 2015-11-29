@@ -31,7 +31,7 @@ public class Problema {
 	}
 	
 	
-	public Problema(double capacidadMochila, int numObjetos){
+	public Problema(double capacidadMochila, int numObjetos, boolean intervalos){
 		this.capacidadMochila=capacidadMochila;
 		this.numObjetos=numObjetos;
 		
@@ -39,18 +39,18 @@ public class Problema {
 		
 		for (int i=0;i<objetos.length;i++)
 		{
-			objetos[i]=new Objeto();
+			objetos[i]=new Objeto(intervalos);
 		}
 		
 	}
 	
-	public static Problema generarProblemaAleatorio(boolean facil){
+	public static Problema generarProblemaAleatorio(char tipoProblema){
 		int minMochila=0;
 		int maxMochila=0;
 		int numObjetos=0;
+		boolean intervalos=false;
 		
-		
-		if (facil){
+		if (tipoProblema=='s'||tipoProblema=='S'){
 			minMochila=MIN_MOCHILA_FACIL;
 			maxMochila=MAX_MOCHILA_FACIL;
 			numObjetos=NUM_OBJETOS_FACIL;
@@ -58,10 +58,11 @@ public class Problema {
 			minMochila=MIN_MOCHILA_DIFICIL;
 			maxMochila=MAX_MOCHILA_DIFICIL;
 			numObjetos=NUM_OBJETOS_DIFICIL;
+			if (tipoProblema=='i'||tipoProblema=='I') 
+				intervalos=true;
 		}
 		
-		
-		return new Problema(generarCapacidadMochila(minMochila, maxMochila), numObjetos);
+		return new Problema(generarCapacidadMochila(minMochila, maxMochila), numObjetos, intervalos);
 	}
 	
 	private static double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
