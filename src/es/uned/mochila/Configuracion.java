@@ -21,13 +21,19 @@ public class Configuracion {
 	
 	//El promedio de mutaciones en el genotipo del indivíduo
 	private double promedioMutaciones;
+	
+	//Probabilidad de realizar el cruce por un punto.
+	private double probabilidadCruce;
 
-	public Configuracion(int numEjecuciones, int tamanioTorneo, int tamanioPoblacion, int maxGeneraciones, double promedioMutaciones){
+	public Configuracion(int numEjecuciones, int tamanioTorneo, 
+			int tamanioPoblacion, int maxGeneraciones, double promedioMutaciones,
+			double probabilidadCruce){
 		this.maxGeneraciones=maxGeneraciones;
 		this.numEjecuciones=numEjecuciones;
 		this.tamanioPoblacion=tamanioPoblacion;
 		this.tamanioTorneo=tamanioTorneo;
 		this.promedioMutaciones=promedioMutaciones;
+		this.probabilidadCruce=probabilidadCruce;
 	}
 
 	public int getNumEjecuciones() {
@@ -48,6 +54,10 @@ public class Configuracion {
 	
 	public double getPromedioMutaciones(){
 		return promedioMutaciones;
+	}
+	
+	public double getProbabilidadCruce(){
+		return probabilidadCruce;
 	}
 
 }

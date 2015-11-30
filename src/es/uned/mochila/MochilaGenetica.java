@@ -255,6 +255,8 @@ public class MochilaGenetica {
 		int torneo=2;
 		int generaciones=5000;
 		double promedioMutaciones=1;
+		double probabilidadCruce=1;
+		
 		Configuracion configuracion=null;
 		
 		FileReader f =null;
@@ -287,13 +289,16 @@ public class MochilaGenetica {
 						case "mutaciones":
 							promedioMutaciones=Double.parseDouble(valoresConfiguracion[1]);
 							break;
+						case "probabilidad cruce":
+							promedioMutaciones=Double.parseDouble(valoresConfiguracion[1]);
+							break;
 						default:
 							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
 					}
 				}
 				lineaTratada++;
 			}
-			configuracion=new Configuracion(ejecuciones, torneo, poblacion, generaciones, promedioMutaciones);			
+			configuracion=new Configuracion(ejecuciones, torneo, poblacion, generaciones, promedioMutaciones, probabilidadCruce);			
 			
         }
 		catch (FileNotFoundException fnf){

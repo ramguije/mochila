@@ -99,12 +99,17 @@ public class EjecutorProblemaMochila {
 	public Objeto[] getObjetos(){
 		return problema.getObjetos();
 	}
+	
+	public double getProbabilidadCruce(){
+		return configuracion.getProbabilidadCruce();
+	}
 
 	public void printConfiguracion(){
 		System.out.println("Tamaño población "+configuracion.getTamanioPoblacion());
 		System.out.println("Tamaño torneo "+configuracion.getTamanioTorneo());
 		System.out.println("Número máximo de generaciones "+configuracion.getMaxGeneraciones());
 		System.out.println("Número promedio de mutaciones por individuo "+configuracion.getPromedioMutaciones());
+		System.out.println("probabilidad de cruce "+configuracion.getProbabilidadCruce());
 		System.out.println("");
 		
 	}

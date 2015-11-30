@@ -2,7 +2,7 @@ package es.uned.mochila;
 
 public abstract class CrucePadres {
 	//Ojo, esta referencia habría que hacerla a una clase abstracta o interfaz
-	private EjecutorProblemaMochila problema=null;
+	private EjecutorProblemaMochila EjecutorProblema=null;
 	
 	//Referencia a la instancia Singleton 
 	private static CrucePadres instancia=null;
@@ -19,11 +19,11 @@ public abstract class CrucePadres {
 		//Para ser implementado por la estrategia concreta de selección.
 		protected abstract Individuo[] getDescendencia(Individuo[] matingPool);
 		
-		protected void setProblema(EjecutorProblemaMochila p){
-			this.problema=p;
+		protected void setEjecutorProblema(EjecutorProblemaMochila p){
+			this.EjecutorProblema=p;
 		}
 		
-		protected EjecutorProblemaMochila getProblema(){
-			return problema;
+		protected EjecutorProblemaMochila getEjecutorProblema(){
+			return EjecutorProblema;
 		}
 }
