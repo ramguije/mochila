@@ -86,25 +86,39 @@ public class MochilaGenetica {
 			System.in.read(new byte[10]);
 						
 			if (nueva=='s' || nueva=='S'){
-				//boolean sencillo=false;
-				System.out.println("Prefiere un problema sencillo: "+Problema.NUM_OBJETOS_FACIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_FACIL+","+Problema.MAX_MOCHILA_FACIL+"]");
-				System.out.println("complejo: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
-				System.out.println("o complejo restringiendo los intervalos: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
-				System.out.println("[s]encillo / [c]omplejo / complejo con [i]ntervalos de valores (presione intro)");
-				char tipoProblema=(char)System.in.read();
-				if (tipoProblema=='s' || tipoProblema=='S' || tipoProblema=='c' || tipoProblema=='C' 
-						|| tipoProblema=='i' || tipoProblema=='I' ){
+				System.out.println("Prefiere un problema :");
+				System.out.println(" * Sencillo: "+Problema.NUM_OBJETOS_FACIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_FACIL+","+Problema.MAX_MOCHILA_FACIL+"]");
+				System.out.println(" * Complejo: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println(" * Complejo con volumen truncado: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println(" * Complejo con densidad truncada: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println(" * Complejo con volumen y valor correlacionados: "+Problema.NUM_OBJETOS_DIFICIL+" objetos y la capacidad de la mochila ["+Problema.MIN_MOCHILA_DIFICIL+","+Problema.MAX_MOCHILA_DIFICIL+"]");
+				System.out.println("[s]encillo / [c]omplejo / [v]olumen truncado / [d]ensidad truncada / co[r]relación volumen y valor (presione intro)");
+				char tipoProblema=Character.toLowerCase((char)System.in.read());
+				
+				if (tipoProblema==Problema.MOCHILA_SIMPLE || tipoProblema==Problema.MOCHILA_COMPLEJA 
+						|| tipoProblema==Problema.MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN
+						|| tipoProblema==Problema.MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD
+						|| tipoProblema==Problema.MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR)
+				{
+						
 					problema=Problema.generarProblemaAleatorio(tipoProblema);
+					
 					System.out.println("Guardando instancia del problema a disco");
 					String path=System.getProperty("user.dir");
 					String name=null;
-					if (tipoProblema=='s'||tipoProblema=='S'){
+					
+					if (tipoProblema==Problema.MOCHILA_SIMPLE){
 						name="mochila_sencilla_";
-					}else if (tipoProblema=='c'||tipoProblema=='C'){
+					}else if (tipoProblema==Problema.MOCHILA_COMPLEJA){
 						name="mochila_compleja_";
+					}else if (tipoProblema==Problema.MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN){
+						name="mochila_compleja_intervalos_volumen_";
+					}else if (tipoProblema==Problema.MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD){
+						name="mochila_compleja_intervalos_densidad_";
 					}else{
-						name="mochila_compleja_intervalos_";
+						name="mochila_compleja_correlacion_volumen_valor_";
 					}
+					
 					name=name+System.currentTimeMillis();
 					ficheroProblema=name;
 					boolean generado=problema.AFichero(path+System.getProperty("file.separator")+name);

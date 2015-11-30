@@ -13,6 +13,12 @@ public class Problema {
 	public static final int MAX_MOCHILA_DIFICIL=1000000;
 	public static final int NUM_OBJETOS_DIFICIL=10000;
 	
+	public static final char MOCHILA_SIMPLE='s';
+	public static final char MOCHILA_COMPLEJA='c';
+	public static final char MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN='v';
+	public static final char MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD='d';
+	public static final char MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR='r';
+	
 	private double capacidadMochila;
 	private int numObjetos;
 	private Objeto[] objetos=null;
@@ -31,7 +37,7 @@ public class Problema {
 	}
 	
 	
-	public Problema(double capacidadMochila, int numObjetos, boolean intervalos){
+	public Problema(double capacidadMochila, int numObjetos,char tipoProblema){
 		this.capacidadMochila=capacidadMochila;
 		this.numObjetos=numObjetos;
 		
@@ -39,7 +45,7 @@ public class Problema {
 		
 		for (int i=0;i<objetos.length;i++)
 		{
-			objetos[i]=new Objeto(intervalos);
+			objetos[i]=new Objeto(tipoProblema);
 		}
 		
 	}
@@ -48,9 +54,11 @@ public class Problema {
 		int minMochila=0;
 		int maxMochila=0;
 		int numObjetos=0;
-		boolean intervalos=false;
+//		boolean intervalos=false;
 		
-		if (tipoProblema=='s'||tipoProblema=='S'){
+		char tipoLower=Character.toLowerCase(tipoProblema);
+		
+		if (tipoLower==Problema.MOCHILA_SIMPLE){
 			minMochila=MIN_MOCHILA_FACIL;
 			maxMochila=MAX_MOCHILA_FACIL;
 			numObjetos=NUM_OBJETOS_FACIL;
@@ -58,11 +66,9 @@ public class Problema {
 			minMochila=MIN_MOCHILA_DIFICIL;
 			maxMochila=MAX_MOCHILA_DIFICIL;
 			numObjetos=NUM_OBJETOS_DIFICIL;
-			if (tipoProblema=='i'||tipoProblema=='I') 
-				intervalos=true;
 		}
 		
-		return new Problema(generarCapacidadMochila(minMochila, maxMochila), numObjetos, intervalos);
+		return new Problema(generarCapacidadMochila(minMochila, maxMochila), numObjetos, tipoLower);
 	}
 	
 	private static double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
