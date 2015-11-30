@@ -290,7 +290,7 @@ public class MochilaGenetica {
 							promedioMutaciones=Double.parseDouble(valoresConfiguracion[1]);
 							break;
 						case "probabilidad cruce":
-							promedioMutaciones=Double.parseDouble(valoresConfiguracion[1]);
+							probabilidadCruce=Double.parseDouble(valoresConfiguracion[1]);
 							break;
 						default:
 							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
