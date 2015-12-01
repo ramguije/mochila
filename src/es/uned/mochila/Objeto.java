@@ -57,21 +57,25 @@ public class Objeto {
 				}
 				break;
 			case Problema.MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR:
-				//Usando el mecanismo definido como "Weakly Correlated Instances" en Bansal_2015
-				this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
+				//Primero pruebo usando el mecanismo definido como "Weakly Correlated Instances" en Bansal_2015
+				//Después defino el valor en el rango [volumen-2, volumen+2]
+				boolean valido=false;
+				while (!valido){
+					
+					this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
+					
+					//double minValor=this.volumen-(MAX_RANGO/10);
+					//double maxValor=this.volumen+(MAX_RANGO/10);
 				
-				double minValor=this.volumen-(MAX_RANGO/10);
-				if (minValor<MIN_RANGO){
-					minValor=MIN_RANGO;
+					double minValor=this.volumen-(2);
+					double maxValor=this.volumen+(2);
+					
+					this.valor=Math.random() * (maxValor-minValor) + minValor;
+					//Aseguro que está en el rango previsto y si no está, descarto y vuelvo a generar.
+					if ((this.valor>=MIN_RANGO&&this.valor<=MAX_RANGO)){
+						valido=true;
+					}
 				}
-				
-				double maxValor=this.volumen+(MAX_RANGO/10);
-				if (maxValor>MAX_RANGO){
-					maxValor=MAX_RANGO;
-				}
-				
-				this.valor=Math.random() * (maxValor-minValor) + minValor;
-				
 		}
 		
 	}

@@ -8,17 +8,24 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Clase MochilaGenetica
+ * @author Jesús Ramos
+ * Es la clase inicial. Lee los parámetros y el fichero del problema y se encarga de las ejecuciones y de volcar los 
+ * resultados a fichero.
+ */
 public class MochilaGenetica {
 	private static Estadistica[][] resultados=null;
 	private static Problema problema=null;
 	private static Configuracion configuracion=null;
 	private static String ficheroProblema=null;
 	
+	
 	/**
-	 * Clase principal
+	 * Método inicial
 	 * @param args Espera como primer parámetro el fichero con los parámetros de configuración y como
 	 * segundo parámetro opcional el fichero de texto con la definición del problema. 
-	 * Si no se aporta un segundo parámetro se genera un problema aleatorio. 
+	 * Si no se aporta un segundo parámetro se posibilita la generación un problema aleatorio. 
 	 */
 	public static void main(String[] args) {
 		
@@ -28,7 +35,15 @@ public class MochilaGenetica {
 			}
 			if (args.length > 1){
 				if (args[1]!=null){
-					problema=leerProblemaDeFichero(args[1]);
+					problema=Problema.leerProblemaDeFichero(args[1]);
+					//Guardo el nombre del fichero del problema, lo utilizo para el fichero de resultados.
+					ficheroProblema=args[1].
+							substring(args[1].lastIndexOf(System.getProperty("file.separator"))+1);
+					
+					if (ficheroProblema.contains("/")){
+						ficheroProblema=ficheroProblema.substring(ficheroProblema.lastIndexOf('/')+1);
+						
+					}
 				}
 			}
 			else{
@@ -53,12 +68,11 @@ public class MochilaGenetica {
 				resultados[i]=ejecutor.run();
 				
 				//Muestro el resultado de la ejecución.
-				//System.out.println("Ejecución "+i+": ");
 				System.out.println("Hora de fin ejecución "+i+": "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSSS").format(new Date()));
 				resultados[i][configuracion.getMaxGeneraciones()].imprimir();
 			}
 			
-			//Volcar los resultados a un fichero
+			//Vuelco los resultados a fichero
 			escribirResultadosAFichero();
 			
 		}
@@ -74,7 +88,13 @@ public class MochilaGenetica {
 		
 	}
 	
-	
+	/**
+	 * Permite generar porblemas de la mochila binaria de distintos tipos: Mochila simple y compleja según el enunciado
+	 * de la actividad 1 y, además, problemas complejos con los valores posibles de volumen truncados, con los valores de
+	 * densidad truncados y con los valores de volumen y valor correlacionados. El objetivo es intentar generar problemas de
+	 * la mochila de caracter multimodal.
+	 * @return Un objeto Problema
+	 */
 	private static Problema generarProblema(){
 		Problema problema=null;
 		
@@ -140,111 +160,18 @@ public class MochilaGenetica {
 	}
 	
 	
-	//TODO Si el problema se vuelca a fichero en la clase problema parece que tiene sentido que también se lea de fichero 
-	//en esa clase.
-	private static Problema leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
-		double capacidadMochila=0;
-		int numElementos=0;
-		double[] volumenes=null;
-		double[] valores=null;
-		Problema problema=null;
-		
-		String cadena=null;
-		FileReader f =null;
-		BufferedReader b=null;
-		
-		int valorLeido=0;
-		int lineaTratada=0;
-		
-		try{
-			f = new FileReader(nombreFicheroProblema);
-			b = new BufferedReader(f);
-			
-			
-			while((cadena = b.readLine())!=null) {
-				if (!cadena.startsWith("#")){
-					if (valorLeido==0){
-						capacidadMochila=Double.parseDouble(cadena);
-					}
-					else if (valorLeido==1){
-						numElementos=Integer.parseInt(cadena);
-						volumenes=new double[numElementos];
-						valores=new double[numElementos];
-					}
-					else{
-						String[] datosObjeto=cadena.split(" ");
-						volumenes[valorLeido-2]=Double.parseDouble(datosObjeto[0]);
-						valores[valorLeido-2]=Double.parseDouble(datosObjeto[1]);
-					}
-						
-					valorLeido++;
-				}
-				lineaTratada++;
-			}
-			problema=new Problema(capacidadMochila, numElementos, valores, volumenes);
-			
-			//Guardo el nombre del fichero del problema, lo utilizo para el fichero de resultados.
-			ficheroProblema=nombreFicheroProblema.
-					substring(nombreFicheroProblema.lastIndexOf(System.getProperty("file.separator"))+1);
-			
-			
-			if (ficheroProblema.contains("/")){
-				ficheroProblema=ficheroProblema.substring(ficheroProblema.lastIndexOf('/')+1);
-				
-			}
-			
-        }
-		catch (FileNotFoundException fnf){
-			System.out.println("ERROR - No se ha encontrado el fichero especificado.");
-			System.out.println("Mensaje: "+fnf.getMessage());
-		}
-		catch (IOException io){
-			System.out.println("ERROR - No se ha podido leer el fichero.");
-			System.out.println("Mensaje: "+io.getMessage());
-		}
-		catch (NumberFormatException nfe){
-			System.out.println("ERROR - Formato de número incorrecto en la línea "+lineaTratada+" del fichero.");
-			if (valorLeido==0) 
-				System.out.println("La capacidad de la mochila debe ser un número real usando '.' para separar los decimales");
-			else if (valorLeido==1) 
-				System.out.println("El número de elementos debe ser un valor entero");
-			else 
-				System.out.println("Para el volumen y el valor de los objetos se esperan dos reales separados por un espacio");
-			System.out.println("Mensaje: "+nfe.getMessage());
-			throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
-		}
-		finally{
-			if (b!=null)
-				try {
-					b.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			if (f!=null)
-				try {
-					f.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			
-		}
-		
-		return problema;
-		
-	}
-	
-	
 	
 	/**
 	 * Lee un fichero de texto con los parámetros deseados para el algoritmo genético.
-	 * El formato es <nombre_parámetro>=<valor_parámetro> y debe contener los parámetros 
-	 * {ejecuciones, torneo, poblacion, generaciones}
-	 * Ejemplo 
-	 * #Parámetros de ejecución
-	 *	ejecuciones=50
-	 *	torneo=2
-	 *	poblacion=10
-	 *	generaciones=50
+	 * El formato es <nombre_parámetro>=<valor_parámetro> y puede contener los parámetros:
+	 * {ejecuciones, torneo, poblacion, generaciones, mutaciones, probabilidad cruce}
+	 * Significado
+	 *		ejecuciones: número de ejecuciones del problema. (por defecto 50)
+	 *		torneo: Tamaño del torneo para la selección de padres. (por defecto 100)
+	 *		poblacion: Tamaño de la población. (por defecto 2)
+	 *		generaciones: Número de generaciones antes de finalizar. (por defecto 50000)
+	 *  	mutaciones: Tasa promedio de mutaciones para cada indivíduo. (por defecto 1)
+	 * 		probabilidad cruce: Probabilidad de que se produzca el cruce de dos padres. (por defecto 1)
 	 * @param nombreFicheroConfiguracion El nombre del fichero a leer.
 	 * @return Un objeto de la clase Configuracion con los parámetros.
 	 */
@@ -332,7 +259,12 @@ public class MochilaGenetica {
 		return configuracion;
 	}
 	
-	
+	/**
+	 * Escribe los resultados del total de ejecuciones a un fichero de texto con el formato:
+	 * "ejecución generación mejorFitness fitnessMedio numeroEvaluaciones". Los campos se separan por espacios.
+	 * El fichero de salida se puede cargar en R directamente mediante read.table
+	 * @return número de filas escritas en el fichero.
+	 */
 	private static int escribirResultadosAFichero(){
 		PrintWriter writer=null;
 		int filasEscritas=0;
