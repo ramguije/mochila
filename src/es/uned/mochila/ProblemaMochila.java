@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Clase Problema.
+ * Clase ProblemaMochila.
  * Representa un problema de la mochila binaria.
  * @author Jesús Ramos
  */
-public class Problema {
+public class ProblemaMochila {
 	//Constantes para la generación de problemas de la mochila binaria
 	public static final int MIN_MOCHILA_FACIL=100;
 	public static final int MAX_MOCHILA_FACIL=10000;
@@ -33,7 +33,7 @@ public class Problema {
 	private Objeto[] objetos=null;
 
 
-	public Problema(double capacidadMochila, int numObjetos, double[] valores, double[] volumenes){
+	public ProblemaMochila(double capacidadMochila, int numObjetos, double[] valores, double[] volumenes){
 		this.capacidadMochila=capacidadMochila;
 		this.numObjetos=numObjetos;
 		
@@ -46,7 +46,7 @@ public class Problema {
 	}
 	
 	
-	public Problema(double capacidadMochila, int numObjetos,char tipoProblema){
+	public ProblemaMochila(double capacidadMochila, int numObjetos,char tipoProblema){
 		this.capacidadMochila=capacidadMochila;
 		this.numObjetos=numObjetos;
 		
@@ -59,14 +59,14 @@ public class Problema {
 		
 	}
 	
-	public static Problema generarProblemaAleatorio(char tipoProblema){
+	public static ProblemaMochila generarProblemaAleatorio(char tipoProblema){
 		int minMochila=0;
 		int maxMochila=0;
 		int numObjetos=0;
 		
 		char tipoLower=Character.toLowerCase(tipoProblema);
 		
-		if (tipoLower==Problema.MOCHILA_SIMPLE){
+		if (tipoLower==ProblemaMochila.MOCHILA_SIMPLE){
 			minMochila=MIN_MOCHILA_FACIL;
 			maxMochila=MAX_MOCHILA_FACIL;
 			numObjetos=NUM_OBJETOS_FACIL;
@@ -76,7 +76,7 @@ public class Problema {
 			numObjetos=NUM_OBJETOS_DIFICIL;
 		}
 		
-		return new Problema(generarCapacidadMochila(minMochila, maxMochila), numObjetos, tipoLower);
+		return new ProblemaMochila(generarCapacidadMochila(minMochila, maxMochila), numObjetos, tipoLower);
 	}
 	
 	private static double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
@@ -87,12 +87,12 @@ public class Problema {
 	
 	//TODO Si el problema se vuelca a fichero en la clase problema parece que tiene sentido que también se lea de fichero 
 		//en esa clase.
-	public static Problema leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
+	public static ProblemaMochila leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
 		double capacidadMochila=0;
 		int numElementos=0;
 		double[] volumenes=null;
 		double[] valores=null;
-		Problema problema=null;
+		ProblemaMochila problema=null;
 		
 		String cadena=null;
 		FileReader f =null;
@@ -126,7 +126,7 @@ public class Problema {
 				}
 				lineaTratada++;
 			}
-			problema=new Problema(capacidadMochila, numElementos, valores, volumenes);
+			problema=new ProblemaMochila(capacidadMochila, numElementos, valores, volumenes);
 			
 			
 			/*ficheroProblema=nombreFicheroProblema.

@@ -8,7 +8,7 @@ import java.util.Arrays;
  * La clase se encarga de implementar la función fitness y 
  * de mantener los valores a través de las diferentes ejecuciones. 
  * Valor medio y valor máximo de cada generación
- * TODO: Cambiar Evaluador para que funcione como las demás (selectorPadres, etc)
+ * 
  *
  */
 public class EvaluadorMochilaElementosOrdenados extends Evaluador {

@@ -1,6 +1,6 @@
 package es.uned.mochila;
 
-public class ReemplazoTotalConElitismo {
+public class ReemplazoTotalConElitismo extends SelectorSupervivientes{
 	
 	//Calculo el elitismo segun consta descrito en Eiben y Smith. Es decir, sólo mantengo el 
 	//mejor elemento de la población actual si no hay ningún desdenciente mejor.
@@ -11,8 +11,7 @@ public class ReemplazoTotalConElitismo {
 		double peorFitness=descendientes[0].getFitness();
 		boolean encontradoMejor=false;
 		
-		//TODO Probablemente lo mejor sería que esto viniera en un objeto Poblacion que mantuviera referencia 
-		//a su mejor miembro
+		//Busco el mejor elemento de la población
 		for (int i=0;i<poblacion.length;i++){
 			if (poblacion[i].getFitness()>mejorFitness){
 				mejorFitness=poblacion[i].getFitness();
@@ -32,6 +31,7 @@ public class ReemplazoTotalConElitismo {
 			if (descendientes[i].getFitness()>=mejorFitness){
 				encontradoMejor=true;
 			}else{
+				//Me quedo con el peor de los descendientes que será el que reemplace.
 				if (descendientes[i].getFitness()<peorFitness){
 					peorFitness=descendientes[i].getFitness();
 					peorIndice=i;

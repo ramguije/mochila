@@ -3,20 +3,19 @@ package es.uned.mochila;
 public class EjecutorProblemaMochila {
 	
 	//Encapsula los datos del problema.
-	private Problema problema=null;
+	private ProblemaMochila problema=null;
 	//Datos de configuracion
 	private Configuracion configuracion=null;
 	
 	private Individuo[] poblacion=null;
 	private Individuo[] descendencia=null;
 	private Individuo[] matingPool=null;
+	
 	private Evaluador evaluador=null;
-	private ReemplazoTotalConElitismo reemplazador=new ReemplazoTotalConElitismo();
-	//private SelectorPadres selectorPadres=new SelectorPadresTorneo();
 	private Estadistica[] resultados=null;
 	
 	
-	public EjecutorProblemaMochila(Problema problema, Configuracion configuracion){
+	public EjecutorProblemaMochila(ProblemaMochila problema, Configuracion configuracion){
 		this.problema=problema;
 		this.configuracion=configuracion;
 		poblacion=new Individuo[configuracion.getTamanioPoblacion()];
@@ -52,7 +51,7 @@ public class EjecutorProblemaMochila {
 			this.mutacion(descendencia);
 			evaluador.evaluar(descendencia);
 			//Cambiar esta llamada
-			poblacion=reemplazador.reemplazo(poblacion, descendencia);
+			poblacion=SelectorSupervivientes.getSelectorSupervivientes().reemplazo(poblacion, descendencia);
 			//System.out.println("Generación "+(i+1)+"..............................");
 			resultados[i+1]=evaluador.calculaEstadistica(poblacion);
 			//ultimaEstadistica.imprimir();
@@ -62,7 +61,6 @@ public class EjecutorProblemaMochila {
 		return resultados;
 		
 	}
-	
 	
 	private void inicializarPoblacion(Individuo[] poblacion, int numObjetos){
 		for (int i=0;i<poblacion.length;i++)
@@ -78,11 +76,9 @@ public class EjecutorProblemaMochila {
 		}
 	}
 	
-	
 	public int getTamanoPoblacion() {
 		return configuracion.getTamanioPoblacion();
 	}
-
 
 	public int getTamanoTorneo() {
 		return configuracion.getTamanioTorneo();

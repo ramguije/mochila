@@ -21,12 +21,12 @@ public class Objeto {
 		//Volumen y valor generados aleatoriamente
 		
 		switch (Character.toLowerCase(tipoProblema)){
-			case Problema.MOCHILA_SIMPLE:
-			case Problema.MOCHILA_COMPLEJA:
+			case ProblemaMochila.MOCHILA_SIMPLE:
+			case ProblemaMochila.MOCHILA_COMPLEJA:
 				this.valor=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				break;
-			case Problema.MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN:
+			case ProblemaMochila.MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN:
 				//Cuatro intervalos en los que se puede dar un volumen
 				this.valor=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				double intervalo=Math.random();
@@ -42,7 +42,7 @@ public class Objeto {
 					this.volumen=Math.random() * (MAX_INTERVALO_1-MIN_INTERVALO_1) + MIN_INTERVALO_1;
 				}
 				break;
-			case Problema.MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD:
+			case ProblemaMochila.MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD:
 				//tres valores de densidad
 				this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				double intervaloDensidad=Math.random();
@@ -56,7 +56,7 @@ public class Objeto {
 					this.valor=this.volumen/10;
 				}
 				break;
-			case Problema.MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR:
+			case ProblemaMochila.MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR:
 				//Primero pruebo usando el mecanismo definido como "Weakly Correlated Instances" en Bansal_2015
 				//Después defino el valor en el rango [volumen-2, volumen+2]
 				boolean valido=false;
