@@ -1,5 +1,10 @@
 package es.uned.mochila;
 
+
+/**
+ * Clase EjecutorProblemaMochila - Es la clase que ejecuta el algoritmo genético. 
+ * @author Jesús Ramos.
+ */
 public class EjecutorProblemaMochila {
 	
 	//Encapsula los datos del problema.
@@ -7,40 +12,38 @@ public class EjecutorProblemaMochila {
 	//Datos de configuracion
 	private Configuracion configuracion=null;
 	
-	private Individuo[] poblacion=null;
-	private Individuo[] descendencia=null;
-	private Individuo[] matingPool=null;
 	
-	private Evaluador evaluador=null;
-	private Estadistica[] resultados=null;
+	private Individuo[] poblacion=null; //Colección de individuos que forman la población
+	private Individuo[] matingPool=null; //Colección de padres seleccionados para generar la descendencia
+	private Individuo[] descendencia=null; //La descendencia de la población
+	
+	private Evaluador evaluador=null; //Realiza la evaluación de cada generación
+	private Estadistica[] resultados=null;  //Los resultados de esta ejecución del algoritmo.
 	
 	
 	public EjecutorProblemaMochila(ProblemaMochila problema, Configuracion configuracion){
 		this.problema=problema;
 		this.configuracion=configuracion;
 		poblacion=new Individuo[configuracion.getTamanioPoblacion()];
-		//resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
 	}
 
+	/**
+	 * Ejecución del algoritmo genético.
+	 * @return Una colección de objetos de la clase Estadistica, uno para cada generación incluida la inicial aleatoria.
+	 */
 	public Estadistica[] run(){
-		//Inicialización del AG		
+		//Inicialización de la población del AG		
 		this.inicializarPoblacion(poblacion, problema.getNumObjetos());
 		resultados=new Estadistica[configuracion.getMaxGeneraciones()+1];
 		
-		//System.out.println ("Capacidad de la mochila: "+this.capacidadMochila);
-		//System.out.println ("");
-		
 		//Inicio del ciclo
 		evaluador=Evaluador.getNuevoEvaluador(this);
+		
+		//Evaluo la población inicial
 		evaluador.evaluar(poblacion);
-		//System.out.println("Población inicial..............................");
 		resultados[0]=evaluador.calculaEstadistica(poblacion);
-		//ultimaEstadistica.imprimir();
-		//System.out.println ("");
 		
-		//Ciclo principal. Cuál debe ser la condición de terminación?? 
-		//De momento número máximo de generaciones
-		
+		//Ciclo principal. Se ejecuta hasta un máximo de generaciones que se debe haber específicado como parámetro. 
 		for (int i=0;i<configuracion.getMaxGeneraciones();i++){
 			//SeleccionarPadres
 			matingPool=SelectorPadres.getSelector(this).getMatingPool(poblacion);
@@ -48,20 +51,26 @@ public class EjecutorProblemaMochila {
 			//Recombinar padres
 			descendencia=CrucePadres.getInstanciaCruce(this).getDescendencia(matingPool);
 			
+			//Realizar las posibles mutaciones
 			this.mutacion(descendencia);
+			
+			//Evaluar la descendencia
 			evaluador.evaluar(descendencia);
-			//Cambiar esta llamada
+			
+			//Seleccionar los supervivientes de la siguiente generación. 
 			poblacion=SelectorSupervivientes.getSelectorSupervivientes().reemplazo(poblacion, descendencia);
-			//System.out.println("Generación "+(i+1)+"..............................");
+
 			resultados[i+1]=evaluador.calculaEstadistica(poblacion);
-			//ultimaEstadistica.imprimir();
-			//System.out.println ("");
+
 		}
 		
 		return resultados;
 		
 	}
 	
+	/**
+	 * Inicializa la población de forma aleatoria.
+	 */
 	private void inicializarPoblacion(Individuo[] poblacion, int numObjetos){
 		for (int i=0;i<poblacion.length;i++)
 		{
@@ -69,12 +78,18 @@ public class EjecutorProblemaMochila {
 		}
 	}
 	
+	/**
+	 * Manda un mensaje a cada individuo para que realice la mutación.
+	 * @param descendencia
+	 */
 	private void mutacion(Individuo[] descendencia)
 	{
 		for (int i=0;i<descendencia.length;i++){
 			descendencia[i].mutacion(configuracion.getPromedioMutaciones());
 		}
 	}
+	
+	//Métodos para acceder a los parámetros y a los datos del problema.
 	
 	public int getTamanoPoblacion() {
 		return configuracion.getTamanioPoblacion();

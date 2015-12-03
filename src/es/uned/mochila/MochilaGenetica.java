@@ -15,9 +15,10 @@ import java.util.Date;
  * resultados a fichero.
  */
 public class MochilaGenetica {
-	private static Estadistica[][] resultados=null;
-	private static ProblemaMochila problema=null;
-	private static Configuracion configuracion=null;
+	
+	private static Estadistica[][] resultados=null; //Resultados de las distintas ejecuciones de un mismo problema
+	private static ProblemaMochila problema=null; //Datos del problema a resolver
+	private static Configuracion configuracion=null; //Configuración que se usará para resolver el problema
 	private static String ficheroProblema=null;
 	
 	
