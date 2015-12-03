@@ -16,9 +16,13 @@ public class CrucePorUnPunto extends CrucePadres {
 		for (int i=0;i<matingPool.length;i=i+2){
 			
 			//CRUCE POR UN PUNTO.
-			double cruceAleatorio=Math.random();
+			double comparadorProbabilidadCruce=Math.random();
 			
-			if (cruceAleatorio<this.getEjecutorProblema().getProbabilidadCruce()){
+			//Si la población es impar el último elemento del matingpool no se cruza.
+			if (i+1==matingPool.length){
+				descendencia[i]=new Individuo(matingPool[i].getGenotipo().clone());
+				
+			}else if (comparadorProbabilidadCruce<this.getEjecutorProblema().getProbabilidadCruce()){
 
 				boolean[] nuevoGenotipo1=new boolean[getEjecutorProblema().getNumObjetos()];			
 				boolean[] nuevoGenotipo2=new boolean[getEjecutorProblema().getNumObjetos()];

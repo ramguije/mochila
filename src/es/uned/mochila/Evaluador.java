@@ -5,18 +5,19 @@ public abstract class Evaluador {
 	//Ojo, esta referencia habría que hacerla a una clase abstracta o interfaz
 	private EjecutorProblemaMochila problema=null;
 	//Referencia a la instancia Singleton 
-	private static Evaluador instancia=null;
+	//private static Evaluador instancia=null;
 	
 	private int numEvaluacionesTotales;
 	private int numEvaluacionesUltimaGeneracion;
 
-	public static Evaluador getEvaluador(EjecutorProblemaMochila p)
+	public static Evaluador getNuevoEvaluador(EjecutorProblemaMochila p)
 	{
-		if (instancia==null){
-			instancia=new EvaluadorMochilaElementosOrdenados(p);
-		}
+		//if (instancia==null){
+			//instancia=new EvaluadorMochilaElementosOrdenados(p);
+		//}
 		
-		return instancia;
+		//return instancia;
+		return new EvaluadorMochilaElementosOrdenados(p);
 	}
 	
 	//public void inicializar(Objeto[] objetos);

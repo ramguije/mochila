@@ -32,7 +32,7 @@ public class EjecutorProblemaMochila {
 		//System.out.println ("");
 		
 		//Inicio del ciclo
-		evaluador=Evaluador.getEvaluador(this);
+		evaluador=Evaluador.getNuevoEvaluador(this);
 		evaluador.evaluar(poblacion);
 		//System.out.println("Población inicial..............................");
 		resultados[0]=evaluador.calculaEstadistica(poblacion);
