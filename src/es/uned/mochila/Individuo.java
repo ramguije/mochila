@@ -2,13 +2,16 @@ package es.uned.mochila;
 
 import java.util.Arrays;
 
-
-//TODO: Conviene hace un indivio genérico?? Tengo una interfaz común??
-//TODO: Sacar la probabilidad de mutación a un parámetro?
+/**
+ * Clase que representa a un individuo.
+ * @author Jesús Ramos Guillou
+ *
+ */
 public class Individuo {
-	//De momento lo he implementado así, alguna forma mejor??
+	
+	//Para implementar el genotipo binario he elegido un array de booleanos. 
 	private boolean[] genotipo=null;
-	private double fitness;
+	private double fitness; //Valor de la función fitness que tiene el individuo.
 	
 	public Individuo(int numObjetos){
 		//Generar aleatoriamente el genotipo 
@@ -23,11 +26,31 @@ public class Individuo {
 	public Individuo(boolean[] gen){
 		this.genotipo=gen;
 	}
-
-	public boolean[] getGenotipo() {
-		return genotipo;
+	
+	
+	/**
+	 * Realiza las mutaciones en el individuo.
+	 * @param promedioMutaciones Parámetro establecido con el promedio de mutaciones en un sólo individuo.
+	 */
+	public void mutacion(double promedioMutaciones){
+		//Calcula la mutación.
+		double probabilidadMutacion=(promedioMutaciones/genotipo.length);
+		
+		for (int i=0;i<genotipo.length;i++){
+			double a=Math.random();
+			if (a<probabilidadMutacion){
+				//Se da la mutación, hago un cambio de valor del alelo
+				genotipo[i]=(!genotipo[i]);
+			}
+		}
 	}
 	
+
+	/**
+	 * transforma el genotipo booleano en un String de unos y ceros. Fundamentalmente para
+	 * tareas de depuración.
+	 * @return Cadena de unos y ceros.
+	 */
 	public String getPrintableGenotipo() {
 		
 		StringBuffer representacionGenotipo=new StringBuffer("");
@@ -39,21 +62,8 @@ public class Individuo {
 		return representacionGenotipo.toString();
 	}
 	
-	public void mutacion(double promedioMutaciones){
-		//Calcula la mutación.
-		double probabilidadMutacion=(promedioMutaciones/genotipo.length);
-		
-		for (int i=0;i<genotipo.length;i++){
-			
-			double a=Math.random();
-			if (a<probabilidadMutacion){
-				//Se da la mutación, hago un cambio de valor del alelo
-				//System.out.println("MUTACIÓN!!");
-				genotipo[i]=(!genotipo[i]);
-				
-			}
-			
-		}
+	public boolean[] getGenotipo() {
+		return genotipo;
 	}
 
 	public double getFitness() {

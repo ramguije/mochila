@@ -1,26 +1,23 @@
 package es.uned.mochila;
 
+/**
+ * Clase abstracta que se encarga de evaluar a los diferentes individuos y 
+ * de calcular la estadística de cada generación
+ * @author Jesús Ramos Guillou
+ */
 public abstract class Evaluador {
 	
-	//Ojo, esta referencia habría que hacerla a una clase abstracta o interfaz
 	private EjecutorProblemaMochila problema=null;
-	//Referencia a la instancia Singleton 
-	//private static Evaluador instancia=null;
 	
 	private int numEvaluacionesTotales;
 	private int numEvaluacionesUltimaGeneracion;
 
 	public static Evaluador getNuevoEvaluador(EjecutorProblemaMochila p)
 	{
-		//if (instancia==null){
-			//instancia=new EvaluadorMochilaElementosOrdenados(p);
-		//}
-		
-		//return instancia;
 		return new EvaluadorMochilaElementosOrdenados(p);
 	}
 	
-	//public void inicializar(Objeto[] objetos);
+	//Método abstracto. A reescribir en clases que extiendan a ésta. 
 	public abstract void evaluar(Individuo[] elementos);
 	
 	public Estadistica calculaEstadistica(Individuo[] elementos){

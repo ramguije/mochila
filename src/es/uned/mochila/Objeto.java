@@ -1,11 +1,20 @@
 package es.uned.mochila;
 
+/**
+ * Clase que representa cada uno de los objetos que se pueden introducir en la mochila.
+ * @author Jesús Ramos Guillou
+ *
+ */
 public class Objeto {
+	
 	private double valor;
 	private double volumen;
 	
+	//Rango mínimo y máximo que puede tener el objeto, tanto de valor como de volumen.
 	public static final int MIN_RANGO=1;
 	public static final int MAX_RANGO=100;
+	
+	//Constantes usadas para generar intervalos que permitan truncar los valores de volumen. 
 	public static final int NUM_INTERVALOS_VALOR=4;
 	public static final int NUM_INTERVALOS_DENSIDAD=3;
 	public static final int MIN_INTERVALO_1=10;
@@ -18,16 +27,20 @@ public class Objeto {
 	public static final int MAX_INTERVALO_4=100;
 	
 	public Objeto(char tipoProblema){
-		//Volumen y valor generados aleatoriamente
 		
+		//En función del tipo de problema se generan el valor y el volumen de una manera distinta.
 		switch (Character.toLowerCase(tipoProblema)){
 			case ProblemaMochila.MOCHILA_SIMPLE:
 			case ProblemaMochila.MOCHILA_COMPLEJA:
+				//Si el problema es simple o complejo según el enunciado de la actividad
+				//volumen y valor se generan aleatoriamente en el rango [1, 100]
 				this.valor=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				break;
+			//A partir de aquí, la búsqueda del problema multimodal.
 			case ProblemaMochila.MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN:
-				//Cuatro intervalos en los que se puede dar un volumen
+				//Truncando los valores de volumen.
+				//Cuatro intervalos en los que se puede dar un volumen [10, 20], [30, 40], [70, 80] y [90, 100]
 				this.valor=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				double intervalo=Math.random();
 				double limIntervalos=(1.0/Objeto.NUM_INTERVALOS_VALOR);
@@ -43,7 +56,8 @@ public class Objeto {
 				}
 				break;
 			case ProblemaMochila.MOCHILA_COMPLEJA_INTERVALOS_DENSIDAD:
-				//tres valores de densidad
+				//Definiendo tres valores fijos de densidad. Hubiera sido preferible hacer rangos pero enseguida 
+				//se pasa a la siguiente prueba (correlación) que parece más prometedora.
 				this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 				double intervaloDensidad=Math.random();
 				double limIntervalosDensidad=(1.0/Objeto.NUM_INTERVALOS_DENSIDAD);
@@ -57,6 +71,7 @@ public class Objeto {
 				}
 				break;
 			case ProblemaMochila.MOCHILA_COMPLEJA_CORRELACION_VOLUMEN_VALOR:
+				//Buscando correlacionar valor y volumen.
 				//Primero pruebo usando el mecanismo definido como "Weakly Correlated Instances" en Bansal_2015
 				//Después defino el valor en el rango [volumen-2, volumen+2]
 				boolean valido=false;
@@ -64,6 +79,9 @@ public class Objeto {
 					
 					this.volumen=Math.random() * (MAX_RANGO-MIN_RANGO) + MIN_RANGO;
 					
+					//Mecanismo definido como "Weakly Correlated Instances"
+					//en el artículo "Quantum-Inspired Evolutionary Algorithm for difficult knapsack problems"
+					// Bansal et al. 2015.
 					//double minValor=this.volumen-(MAX_RANGO/10);
 					//double maxValor=this.volumen+(MAX_RANGO/10);
 				

@@ -21,7 +21,7 @@ public class ProblemaMochila {
 	public static final int MAX_MOCHILA_DIFICIL=1000000;
 	public static final int NUM_OBJETOS_DIFICIL=10000;
 	
-	//Tipos de problemas de la mochila.
+	//Tipos definidos de de problemas de la mochila.
 	public static final char MOCHILA_SIMPLE='s';
 	public static final char MOCHILA_COMPLEJA='c';
 	public static final char MOCHILA_COMPLEJA_INTERVALOS_VOLUMEN='v';
@@ -32,7 +32,7 @@ public class ProblemaMochila {
 	private int numObjetos;
 	private Objeto[] objetos=null;
 
-
+	
 	public ProblemaMochila(double capacidadMochila, int numObjetos, double[] valores, double[] volumenes){
 		this.capacidadMochila=capacidadMochila;
 		this.numObjetos=numObjetos;
@@ -59,6 +59,11 @@ public class ProblemaMochila {
 		
 	}
 	
+	/**
+	 * Genera un problema aleatorio del tipo que se le diga
+	 * @param tipoProblema Letra que marca el tipo de problema.
+	 * @return Un objeto de tipo ProblemaMochila con el problema generado.
+	 */
 	public static ProblemaMochila generarProblemaAleatorio(char tipoProblema){
 		int minMochila=0;
 		int maxMochila=0;
@@ -82,11 +87,23 @@ public class ProblemaMochila {
 	private static double generarCapacidadMochila(int minCapacidad, int maxCapacidad) {
 		//Generar aleatoriamente la capacidad de la mochila
 		return Math.random() * (maxCapacidad-minCapacidad) + minCapacidad;
-		
 	}
 	
-	//TODO Si el problema se vuelca a fichero en la clase problema parece que tiene sentido que también se lea de fichero 
-		//en esa clase.
+	/**
+	 * Crea un objeto ProblemaMochila Leyendo los datos de un fichero de problema con el siguiente formato:
+	 * --------------------------------
+	 * #Se permiten comentarios que empiecen por almohadilla
+	 * <capacidad de la mochila>
+	 * <numero de objetos>
+	 * <volumen objeto 1> <valor objeto 1>
+	 * <volumen objeto 2> <valor objeto 2>
+	 * ...
+	 * <volumen objeto n> <valor objeto n>
+	 * 
+	 * @param nombreFicheroProblema nombre del fichero a leer
+	 * @return El problema encapsulado en un objeto ProblemaMochila
+	 * @throws IllegalArgumentException Se lanza cuando el fichero no tiene el formato adecuado.
+	 */
 	public static ProblemaMochila leerProblemaDeFichero(String nombreFicheroProblema) throws IllegalArgumentException{
 		double capacidadMochila=0;
 		int numElementos=0;
@@ -127,16 +144,6 @@ public class ProblemaMochila {
 				lineaTratada++;
 			}
 			problema=new ProblemaMochila(capacidadMochila, numElementos, valores, volumenes);
-			
-			
-			/*ficheroProblema=nombreFicheroProblema.
-					substring(nombreFicheroProblema.lastIndexOf(System.getProperty("file.separator"))+1);
-			
-			
-			if (ficheroProblema.contains("/")){
-				ficheroProblema=ficheroProblema.substring(ficheroProblema.lastIndexOf('/')+1);
-				
-			}*/
 			
         }
 		catch (FileNotFoundException fnf){

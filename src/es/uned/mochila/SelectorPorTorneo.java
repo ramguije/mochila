@@ -2,49 +2,56 @@ package es.uned.mochila;
 
 import java.util.Random;
 
+/**
+ * Clase concreta con la estrategia de selección de padres. En este caso, selección por torneo.
+ * @author Jesús Ramos Guillou
+ *
+ */
 public class SelectorPorTorneo extends SelectorPadres {
 	
 	private Individuo[] poblacion=null;
 	
-	protected SelectorPorTorneo(EjecutorProblemaMochila problema){
-		this.setProblema(problema);
-		
-		
+	protected SelectorPorTorneo(EjecutorProblemaMochila ejecutorProblema){
+		this.setEjecutorProblema(ejecutorProblema);
+
 	}
-	
+
+	/**
+	 * Genera el mating pool con los individuos que serán padres.
+	 */
 	public Individuo[] getMatingPool(Individuo[] poblacion){
-		Individuo[] seleccionados=new Individuo[getProblema().getTamanoPoblacion()];
+		Individuo[] seleccionados=new Individuo[getEjecutorProblema().getTamanoPoblacion()];
 		this.poblacion=poblacion;
 		
 		for (int i=0;i<seleccionados.length;i++){
-			//Conducimos un torneo para seleccionar cada padre
-			seleccionados[i]=torneo(getProblema().getTamanoTorneo());
+			//Conduzco un torneo para seleccionar cada padre
+			seleccionados[i]=torneo(getEjecutorProblema().getTamanoTorneo());
 			
 		}
 		
-		/*for (int i=0;i<seleccionados.length;i++){
-			//Conducimos un torneo para seleccionar cada padre
-			System.out.println("Padre "+i+" fitness: "+seleccionados[i].getFitness());
-			
-		}*/
 		return seleccionados;
 	}
 
+	/**
+	 * Implementa la ejecución del torneo.
+	 * @param tamanoTorneo Número de individuos que participarán en el torneo.
+	 * @return El ganador del torneo.
+	 */
 	private Individuo torneo (int tamanoTorneo){
 		Individuo[] padresPotenciales=new Individuo[tamanoTorneo];
 		double max=0;
 		int indMax=0;
 		
 		for (int i=0;i<tamanoTorneo;i++){
-			
-			int indice=new Random().nextInt(getProblema().getTamanoPoblacion());
-			//System.out.println("Indice aleatorio: "+indice);
+			// Selecciono aleatoriamente un número de individuos igual al tamaño del torneo 
+			// de entre la población
+			int indice=new Random().nextInt(getEjecutorProblema().getTamanoPoblacion());
 			
 			padresPotenciales[i]=poblacion[indice];
 			
-			//System.out.println("Padre: "+i+", valor fitness: "+padresPotenciales[i].getFitness());
 		}
 		
+		//Busco el que tiene mayor fitness que será el ganador.
 		for (int i=0;i<padresPotenciales.length;i++){
 			if (padresPotenciales[i].getFitness()>max){
 				max=padresPotenciales[i].getFitness();
@@ -52,7 +59,6 @@ public class SelectorPorTorneo extends SelectorPadres {
 			}
 		}
 		
-		//System.out.println("Ganador: "+indMax+", valor fitness: "+padresPotenciales[indMax].getFitness());
 		return padresPotenciales[indMax];
 		
 	}

@@ -1,9 +1,16 @@
 package es.uned.mochila;
 
+/**
+ * Clase que realiza la selección de supervivientes mediante un modelo generacional con elitismo.
+ * @author Jesús Ramos Guillou
+ *
+ */
 public class ReemplazoTotalConElitismo extends SelectorSupervivientes{
 	
-	//Calculo el elitismo segun consta descrito en Eiben y Smith. Es decir, sólo mantengo el 
-	//mejor elemento de la población actual si no hay ningún desdenciente mejor.
+	/**
+	 * Realiza el reemplazo total de la población aplicando elitismo. Sólo se mantiene el mejor 
+	 * elemento de la población actual si no hay ningún descendiente mejor.
+	 */
 	public Individuo[] reemplazo(Individuo[] poblacion, Individuo[] descendientes){
 		int mejorIndice=0;
 		double mejorFitness=0;
@@ -18,9 +25,6 @@ public class ReemplazoTotalConElitismo extends SelectorSupervivientes{
 				mejorIndice=i;
 			}
 		}
-		
-		//System.out.println("fitness mejor elemento población="+poblacion[mejorIndice].getFitness());
-		//System.out.println("mejor indice "+mejorIndice);
 		
 		if (descendientes[0].getFitness()>=mejorFitness){
 			encontradoMejor=true;
@@ -39,17 +43,12 @@ public class ReemplazoTotalConElitismo extends SelectorSupervivientes{
 			}
 		}
 		
-		//System.out.println("fitness peor elemento descendiente="+descendientes[peorIndice].getFitness());
-		
+		//Si no encuentro ningún descendiente mejor, reemplazo el descendiente con peor 
+		//fitness por el individuo con mejor fitness. 
 		if (!encontradoMejor){
-			//mantengo el mejor de la población. Reemplazo el peor de los descendientes.
-			//System.out.println("No encontrado ningún descendiente mejor. Se sustituye.");
-			//System.out.println(descendientes[peorIndice].getFitness());
+
 			descendientes[peorIndice]=poblacion[mejorIndice];
-			//System.out.println("por");
-			//System.out.println("Fitness: "+ descendientes[peorIndice].getFitness());
-			//System.out.println("Indice:" +peorIndice);
-			//System.out.println("");
+
 		}
 		
 		return descendientes;

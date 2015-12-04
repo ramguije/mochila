@@ -2,7 +2,7 @@ package es.uned.mochila;
 
 
 /**
- * Clase EjecutorProblemaMochila - Es la clase que ejecuta el algoritmo genético. 
+ * Es la clase que ejecuta el algoritmo genético. 
  * @author Jesús Ramos.
  */
 public class EjecutorProblemaMochila {

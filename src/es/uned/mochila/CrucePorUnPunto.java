@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Clase CrucePorUnPunto - realiza el cruce por un punto entre los individuos que hay en el mating pool.
- * @author Jesús Ramos
+ * Implementación del mecanismo de cruce: cruce por un punto entre los individuos que hay en el mating pool.
+ * @author Jesús Ramos Guillou
  */
 public class CrucePorUnPunto extends CrucePadres {
 
@@ -13,7 +13,9 @@ public class CrucePorUnPunto extends CrucePadres {
 		this.setEjecutorProblema(p);
 	}
 	
-	
+	/**
+	 * Calcula los descendientes a partir del mating pool.
+	 */
 	protected Individuo[] getDescendencia(Individuo[] matingPool) {
 		Individuo[] descendencia=new Individuo[getEjecutorProblema().getTamanoPoblacion()];
 		

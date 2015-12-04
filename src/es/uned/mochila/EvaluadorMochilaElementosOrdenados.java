@@ -7,9 +7,7 @@ import java.util.Arrays;
  * @author Jesús Ramos
  * La clase se encarga de implementar la función fitness y 
  * de mantener los valores a través de las diferentes ejecuciones. 
- * Valor medio y valor máximo de cada generación
- * 
- *
+ * Valor medio y valor máximo de fitness de cada generación.
  */
 public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 
@@ -25,30 +23,20 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		
 	}
 	
+	
 	private void inicializar() {
-		// TODO Auto-generated method stub
-		//generar un array con los índices de los objetos ordenados en función del ratio
-		
-		/*for (int i=0;i<objetos.length;i++){
-			System.out.println("indice :"+i+" valor :"+objetos[i].getRatio());
-		}*/
-		
 		//Genero un array de índices que será el que ordene para no alterar el orden real de los objetos.
 		ordenObjetos=new Integer[objetos.length];
 		for (int i=0;i<ordenObjetos.length;i++){
 			ordenObjetos[i]=i;
 		}
 		
+		//Expresión lambda para ordenar el array en función del ratio.
 		Arrays.sort(ordenObjetos, 
 				(first,second) -> Double.compare(objetos[first].getRatio(), objetos[second].getRatio())*-1);
-		
-		/*for (int i=0;i<ordenObjetos.length;i++){
-			System.out.println("indice :"+i+" orden indice :"+ordenObjetos[i]+" valor: "+objetos[ordenObjetos[i]].getRatio());
-		}*/
-		
 	}
 
-	@Override
+	//Evalúa una colección de Individuos.
 	public void evaluar(Individuo[] elementos) {
 		
 		//reseteo el contador de evaluaciones
@@ -56,12 +44,11 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		
 		for (Individuo ind:elementos){
 			//Para cada elemento calculo su función fitness y se la añado
-			ind.setFitness(this.funcionFitness(ind));
-			
+			ind.setFitness(this.funcionFitness(ind));	
 		}
-
 	}
 	
+	//Método que implementa la función Fitness.
 	private double funcionFitness(Individuo ind)
 	{
 		boolean[] genotipo=ind.getGenotipo();
@@ -69,43 +56,24 @@ public class EvaluadorMochilaElementosOrdenados extends Evaluador {
 		double totalValor=0;
 		boolean mochilaLlena=false;
 		
-		//imprimo el orden de objetos
-		/*for (int i=0;i<ordenObjetos.length;i++){
-			System.out.println("Orden de objetos:");
-			System.out.println("indice :"+i+" orden indice :"+ordenObjetos[i]+" valor: "+objetos[ordenObjetos[i]].getRatio());
-		}*/
-		
-		/*System.out.println ("Función Fitness. Imprimo el genotipo ordenado");
-		
-		for (int i=0;i<ordenObjetos.length;i++)
-		{
-			if (genotipo[ordenObjetos[i]]==true){
-				System.out.print ("1");
-			}else{
-				System.out.print ("0");
-			}
-		}
-		System.out.println("");*/
-		
-		
+		//Mientras no se hayan recorrido todos los objetos y la mochila no esté exactamente llena
 		for (int i=0;i<ordenObjetos.length&&!mochilaLlena;i++){
+			//Si el genotipo en esa posición es "1" y el volumen del objeto cabe en la mochila
 			if ((genotipo[ordenObjetos[i]]==true) && 
 					((totalVolumen+this.objetos[ordenObjetos[i]].getVolumen())<=this.capacidadMochila)){
-				//System.out.println ("El objeto "+i+" está y cabe en la mochila");
-				//System.out.println ("Valor: "+this.objetos[ordenObjetos[i]].getValor());
+				//sumo valor y sumo volumen.
 				totalValor=totalValor+this.objetos[ordenObjetos[i]].getValor();
 				totalVolumen=totalVolumen+this.objetos[ordenObjetos[i]].getVolumen();
-				if (totalVolumen==this.capacidadMochila) 
-					mochilaLlena=true;
 				
+				//Compruebo si la mochila está llena.
+				if (totalVolumen==this.capacidadMochila) 
+					mochilaLlena=true;		
 			}
 			
 		}
-		//System.out.println ("Total Valor: "+totalValor);
-		//System.out.println ("Total Volumen: "+totalVolumen);
-		//System.out.println ("Capacidad mochila: "+this.capacidadMochila);
 		this.setNumEvaluacionesTotales(this.getNumEvaluacionesTotales()+1);
 		this.setNumEvaluacionesUltimaGeneracion(this.getNumEvaluacionesUltimaGeneracion()+1);
+		
 		return totalValor;
 		
 	}

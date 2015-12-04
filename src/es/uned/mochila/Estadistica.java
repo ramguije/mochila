@@ -1,10 +1,15 @@
 package es.uned.mochila;
 
+/**
+ * Clase que mantiene los resultados de cada generación.
+ * @author Jesús Ramos Guillou
+ *
+ */
 public class Estadistica {
 	private double fitnessMedio;
 	private double mejorFitness;
 	private int indiceMejorElemento; //El índice al elemento de la población con mejor fitness
-	private String printableGenotipo=null; //El genotipo en un formato ya preparado para imprimir
+	private String printableGenotipo=null; //El genotipo en un formato preparado para imprimir
 	private int numEvaluaciones; //número de evaluaciones de la función fitness
 	
 	public Estadistica(double valorMedio, double mejorValor, int mejorIndice, String printableGenotipo, int numEvaluaciones){
@@ -42,10 +47,14 @@ public class Estadistica {
 	public void imprimir(){
 		System.out.println("valor medio fitness: "+getFitnessMedio());
 		System.out.println("mejor fitness: "+getMejorFitness());
-		//System.out.println("indice elemento con mejor fitness: "+getMejorIndice());
-		//System.out.println("genotipo mejor fitness: ");
-		//System.out.println(getPrintableGenotipo());
 		System.out.println("");
+	}
+	
+	public void imprimirGenotipo(){
+		if (getPrintableGenotipo()!=null){
+			System.out.println("genotipo mejor fitness: ");
+			System.out.println(getPrintableGenotipo());
+		}
 	}
 	
 
