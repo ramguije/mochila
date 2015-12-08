@@ -219,6 +219,10 @@ public class MochilaGenetica {
 							break;
 						case "probabilidad cruce":
 							probabilidadCruce=Double.parseDouble(valoresConfiguracion[1]);
+							if (probabilidadCruce<0 ||probabilidadCruce>1){
+								System.out.println("ERROR - La probabilidad de cruce debe estar entre 0 y 1.");
+								throw new IllegalArgumentException("El fichero no tiene el formato apropiado. La probabilidad debe estar entre 0 y 1.");
+							}
 							break;
 						default:
 							throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
@@ -238,7 +242,7 @@ public class MochilaGenetica {
 			System.out.println("Mensaje: "+io.getMessage());
 		}
 		catch (NumberFormatException nfe){
-			System.out.println("ERROR - Formato de número incorrecto en la línea "+lineaTratada+" del fichero. El valor debe ser un número entero");
+			System.out.println("ERROR - Formato de número incorrecto en la línea "+lineaTratada+" del fichero.");
 			System.out.println("Mensaje: "+nfe.getMessage());
 			throw new IllegalArgumentException("El fichero no tiene el formato apropiado");
 		}

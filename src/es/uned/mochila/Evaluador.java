@@ -7,8 +7,6 @@ package es.uned.mochila;
  */
 public abstract class Evaluador {
 	
-	private EjecutorProblemaMochila problema=null;
-	
 	private int numEvaluacionesTotales;
 	private int numEvaluacionesUltimaGeneracion;
 
